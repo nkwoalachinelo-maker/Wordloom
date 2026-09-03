@@ -228,21 +228,6 @@
   </div>
 </div>
 
-<!-- ============ ACQUIRE ============ -->
-<div id="view-acquire" class="hidden">
-  <div class="auth-wrap">
-    <div class="auth-card">
-      <h2>Acquire this site</h2>
-      <div class="sub">Interested in buying Wordloom? Reach out directly.</div>
-      <div class="dna-grid" style="grid-template-columns: auto 1fr; margin-top: 4px;">
-        <dt>Email</dt><dd><a href="mailto:nkwoalachinelo@gmail.com">nkwoalachinelo@gmail.com</a></dd>
-        <dt>WhatsApp</dt><dd><a href="https://wa.me/2349129543151" target="_blank" rel="noopener">09129543151</a></dd>
-      </div>
-      <button class="submit" id="acquire-back" style="margin-top: 22px;">Back</button>
-    </div>
-  </div>
-</div>
-
 <!-- ============ DASHBOARD ============ -->
 <div id="view-dash" class="hidden">
   <main class="dash">
@@ -295,7 +280,7 @@
 <footer>
   <span>Wordloom · <span id="api-target"></span> · <a id="footer-config">change API endpoint</a></span>
   <span class="sep">|</span>
-  <a id="footer-acquire">Acquire this site</a>
+  <span>Made by NJT</span>
 </footer>
 
 <script>
@@ -315,12 +300,38 @@
     if (val) { API_BASE = val.replace(/\/$/, ''); document.getElementById('api-target').textContent = API_BASE; }
   });
 
+  // Render's free tier spins the server down after idle time, and the
+  // first request after that can take 30-50+ seconds to wake it back up.
+  // fetchWithRetry gives each request a generous 60s timeout, and if it
+  // times out on the first try, retries once automatically (by then the
+  // server is usually awake) instead of surfacing an error immediately.
+  async function fetchWithRetry(url, options = {}, { timeoutMs = 60000, onWaking } = {}) {
+    async function attempt() {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), timeoutMs);
+      try {
+        return await fetch(url, { ...options, signal: controller.signal });
+      } finally {
+        clearTimeout(timer);
+      }
+    }
+
+    try {
+      return await attempt();
+    } catch (err) {
+      if (err.name === 'AbortError') {
+        if (onWaking) onWaking();
+        return await attempt();
+      }
+      throw err;
+    }
+  }
+
   // ---------- View switching ----------
   const views = {
     landing: document.getElementById('view-landing'),
     auth: document.getElementById('view-auth'),
     dash: document.getElementById('view-dash'),
-    acquire: document.getElementById('view-acquire'),
   };
   let previousView = 'landing';
   function showView(name) {
@@ -329,9 +340,6 @@
     Object.values(views).forEach(v => v.classList.add('hidden'));
     views[name].classList.remove('hidden');
   }
-
-  document.getElementById('footer-acquire').addEventListener('click', () => showView('acquire'));
-  document.getElementById('acquire-back').addEventListener('click', () => showView(previousView === 'acquire' ? 'landing' : previousView));
 
   function renderNav() {
     const wrap = document.getElementById('nav-actions');
@@ -381,11 +389,11 @@
 
     const endpoint = authMode === 'login' ? '/login' : '/signup';
     try {
-      const res = await fetch(API_BASE + endpoint, {
+      const res = await fetchWithRetry(API_BASE + endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
-      });
+      }, { onWaking: () => { errEl.textContent = 'Server is waking up, hang on…'; } });
       const payload = await res.json().catch(() => null);
       if (!res.ok || !payload) {
         errEl.textContent = (payload && payload.detail) || 'Something went wrong.';
@@ -462,13 +470,16 @@
     setStatus('busy', 'Rewriting — this runs several passes, so it can take a moment…');
 
     try {
-      const res = await fetch(API_BASE + '/humanize', {
+      const res = await fetchWithRetry(API_BASE + '/humanize', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: 'Bearer ' + sessionToken,
         },
         body: JSON.stringify({ text, voice_samples: samples, location }),
+      }, {
+        timeoutMs: 90000,
+        onWaking: () => setStatus('busy', 'Server is waking up, hang on…'),
       });
       const payload = await res.json().catch(() => null);
 
