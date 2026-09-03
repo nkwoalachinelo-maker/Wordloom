@@ -3,4 +3,4 @@ uvicorn[standard]
 openai
 pydantic[email]
 PyJWT
-passlib[bcrypt]
+bcrypt

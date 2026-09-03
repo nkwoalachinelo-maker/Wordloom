@@ -2,7 +2,7 @@
 Wordloom backend — FastAPI + SQLite, using Groq's OpenAI-compatible API.
 
 Setup:
-    pip install fastapi uvicorn openai pydantic[email] PyJWT "passlib[bcrypt]"
+    pip install fastapi uvicorn openai pydantic[email] PyJWT bcrypt
 
 Required environment variables:
     GROQ_API_KEY    Your Groq API key (console.groq.com)
@@ -23,6 +23,7 @@ Run:
     uvicorn main:app --reload
 """
 
+import hashlib
 import json
 import logging
 import os
@@ -32,11 +33,11 @@ import sqlite3
 from contextlib import closing
 from datetime import date, datetime, timedelta, timezone
 
+import bcrypt
 import jwt
 from fastapi import Depends, FastAPI, Header, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from openai import OpenAI
-from passlib.context import CryptContext
 from pydantic import BaseModel, EmailStr, Field
 
 logging.basicConfig(level=logging.INFO)
@@ -62,7 +63,21 @@ client = OpenAI(
     base_url="https://api.groq.com/openai/v1",
 )
 
-pwd_context = CryptContext(schemes=["bcrypt_sha256"], deprecated="auto")
+def hash_password(password: str) -> str:
+    # SHA-256 pre-hash avoids bcrypt's 72-byte input limit entirely, so
+    # any password length is safe to hash. bcrypt itself still provides
+    # the slow, salted hashing that makes this safe to store.
+    pre_hashed = hashlib.sha256(password.encode("utf-8")).digest()
+    return bcrypt.hashpw(pre_hashed, bcrypt.gensalt()).decode("utf-8")
+
+
+def verify_password(password: str, hashed: str) -> bool:
+    pre_hashed = hashlib.sha256(password.encode("utf-8")).digest()
+    try:
+        return bcrypt.checkpw(pre_hashed, hashed.encode("utf-8"))
+    except ValueError:
+        return False
+
 
 app = FastAPI(title="Wordloom API")
 app.add_middleware(
@@ -213,7 +228,7 @@ def signup(req: SignupRequest):
         if existing:
             raise HTTPException(status_code=409, detail="An account with this email already exists.")
 
-        password_hash = pwd_context.hash(req.password)
+        password_hash = hash_password(req.password)
         cursor = conn.execute(
             "INSERT INTO users (email, password_hash, plan, created_at) VALUES (?, ?, 'free', ?)",
             (req.email, password_hash, datetime.now(timezone.utc).isoformat()),
@@ -232,7 +247,7 @@ def login(req: LoginRequest):
             "SELECT * FROM users WHERE email = ?", (req.email,)
         ).fetchone()
 
-    if not user or not pwd_context.verify(req.password, user["password_hash"]):
+    if not user or not verify_password(req.password, user["password_hash"]):
         raise HTTPException(status_code=401, detail="Incorrect email or password.")
 
     token = create_token(user["id"], user["email"])
