@@ -228,6 +228,21 @@
   </div>
 </div>
 
+<!-- ============ ACQUIRE ============ -->
+<div id="view-acquire" class="hidden">
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <h2>Acquire this site</h2>
+      <div class="sub">Interested in buying Wordloom? Reach out directly.</div>
+      <div class="dna-grid" style="grid-template-columns: auto 1fr; margin-top: 4px;">
+        <dt>Email</dt><dd><a href="mailto:nkwoalachinelo@gmail.com">nkwoalachinelo@gmail.com</a></dd>
+        <dt>WhatsApp</dt><dd><a href="https://wa.me/2349129543151" target="_blank" rel="noopener">09129543151</a></dd>
+      </div>
+      <button class="submit" id="acquire-back" style="margin-top: 22px;">Back</button>
+    </div>
+  </div>
+</div>
+
 <!-- ============ DASHBOARD ============ -->
 <div id="view-dash" class="hidden">
   <main class="dash">
@@ -278,9 +293,11 @@
 </div>
 
 <footer>
-  <span>Wordloom · <span id="api-target"></span> · <a id="footer-config">change API endpoint</a></span>
+  <span>Wordloom</span>
   <span class="sep">|</span>
   <span>Made by NJT</span>
+  <span class="sep">|</span>
+  <a id="footer-acquire">Acquire this site</a>
 </footer>
 
 <script>
@@ -289,16 +306,10 @@
   // requires logging in again. For a production deploy, replace this with
   // an httpOnly session cookie set by the backend, which is more secure
   // than any client-side token storage.
-  let API_BASE = 'http://localhost:8000';
+  let API_BASE = 'https://wordloom-anw1.onrender.com';
   let sessionToken = null;
   let sessionUser = null;
   let authMode = 'login'; // 'login' | 'signup'
-
-  document.getElementById('api-target').textContent = API_BASE;
-  document.getElementById('footer-config').addEventListener('click', () => {
-    const val = prompt('API base URL', API_BASE);
-    if (val) { API_BASE = val.replace(/\/$/, ''); document.getElementById('api-target').textContent = API_BASE; }
-  });
 
   // Render's free tier spins the server down after idle time, and the
   // first request after that can take 30-50+ seconds to wake it back up.
@@ -332,6 +343,7 @@
     landing: document.getElementById('view-landing'),
     auth: document.getElementById('view-auth'),
     dash: document.getElementById('view-dash'),
+    acquire: document.getElementById('view-acquire'),
   };
   let previousView = 'landing';
   function showView(name) {
@@ -340,6 +352,9 @@
     Object.values(views).forEach(v => v.classList.add('hidden'));
     views[name].classList.remove('hidden');
   }
+
+  document.getElementById('footer-acquire').addEventListener('click', () => showView('acquire'));
+  document.getElementById('acquire-back').addEventListener('click', () => showView(previousView === 'acquire' ? 'landing' : previousView));
 
   function renderNav() {
     const wrap = document.getElementById('nav-actions');
