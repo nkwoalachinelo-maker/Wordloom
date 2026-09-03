@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wordloom</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #EDEAE2;
+    --paper-raised: #F5F3ED;
+    --ink: #22242B;
+    --ink-soft: #52565F;
+    --rule: #D3CFC3;
+    --pen: #A13D2B;
+    --highlight: #D9A62E;
+    --teal: #3E5C58;
+    --ok: #3E6B4F;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--paper); color: var(--ink); font-family: 'IBM Plex Sans', sans-serif; }
+  ::selection { background: var(--highlight); color: var(--ink); }
+  h1, h2, h3, .serif { font-family: 'Source Serif 4', serif; }
+  a { color: var(--pen); }
+
+  .hidden { display: none !important; }
+
+  /* ---------- Nav ---------- */
+  nav.top {
+    border-bottom: 3px solid var(--ink);
+    padding: 20px 32px;
+    max-width: 1180px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  nav.top .brand { font-size: 1.4rem; font-weight: 700; }
+  nav.top .brand em { font-style: italic; color: var(--pen); }
+  nav.top .nav-actions { display: flex; gap: 10px; align-items: center; font-size: 0.9rem; }
+  nav.top button, nav.top a.btn {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.85rem;
+    cursor: pointer;
+    border-radius: 3px;
+    padding: 9px 16px;
+    border: 1px solid var(--ink);
+    background: transparent;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  nav.top .btn-primary { background: var(--ink); color: var(--paper); }
+  nav.top .btn-primary:hover { background: var(--pen); border-color: var(--pen); }
+  #nav-usage { font-size: 0.8rem; color: var(--ink-soft); }
+
+  /* ---------- Landing ---------- */
+  .hero {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 72px 32px 40px;
+    text-align: left;
+  }
+  .hero h1 { font-size: clamp(2.2rem, 5vw, 3.4rem); line-height: 1.1; margin: 0 0 18px; }
+  .hero h1 em { font-style: italic; color: var(--pen); }
+  .hero p.lede { font-size: 1.15rem; color: var(--ink-soft); line-height: 1.55; max-width: 56ch; margin: 0 0 28px; }
+  .hero .cta-row { display: flex; gap: 12px; }
+  .hero .cta-row button {
+    font-family: 'Source Serif 4', serif; font-style: italic; font-weight: 600;
+    font-size: 1.05rem; padding: 13px 24px; border-radius: 3px; cursor: pointer; border: none;
+  }
+  .cta-row .primary { background: var(--ink); color: var(--paper); }
+  .cta-row .primary:hover { background: var(--pen); }
+  .cta-row .secondary { background: transparent; color: var(--ink); border: 1px solid var(--rule) !important; }
+
+  section.pricing { max-width: 1180px; margin: 20px auto 80px; padding: 0 32px; }
+  section.pricing h2 { font-size: 1.6rem; margin-bottom: 6px; }
+  section.pricing .sub { color: var(--ink-soft); margin-bottom: 30px; font-size: 0.95rem; }
+  .plans { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 700px) { .plans { grid-template-columns: 1fr; } }
+  .plan-card {
+    border: 1px solid var(--rule); border-radius: 4px; padding: 26px 28px;
+    background: var(--paper-raised);
+  }
+  .plan-card.featured { border-color: var(--pen); border-width: 2px; }
+  .plan-card h3 { margin: 0 0 4px; font-size: 1.3rem; }
+  .plan-card .price { font-size: 2rem; font-weight: 700; margin: 10px 0 4px; font-family: 'Source Serif 4', serif; }
+  .plan-card .price span { font-size: 0.9rem; font-weight: 400; color: var(--ink-soft); }
+  .plan-card ul { list-style: none; padding: 0; margin: 18px 0 0; font-size: 0.9rem; color: var(--ink-soft); }
+  .plan-card li { padding: 5px 0; border-top: 1px dashed var(--rule); }
+  .plan-card li:first-child { border-top: none; }
+
+  /* ---------- Auth ---------- */
+  .auth-wrap { max-width: 420px; margin: 60px auto; padding: 0 32px; }
+  .auth-card { border: 1px solid var(--rule); background: var(--paper-raised); border-left: 3px solid var(--pen); border-radius: 3px; padding: 30px 28px; }
+  .auth-card h2 { margin: 0 0 6px; }
+  .auth-card .sub { color: var(--ink-soft); font-size: 0.9rem; margin-bottom: 20px; }
+  .field { margin-bottom: 16px; }
+  .field label { display: block; font-size: 0.85rem; color: var(--ink-soft); margin-bottom: 6px; }
+  input[type="text"], input[type="email"], input[type="password"], textarea {
+    width: 100%; background: #fff; border: 1px solid var(--rule); color: var(--ink);
+    font-family: 'IBM Plex Sans', sans-serif; font-size: 0.95rem; padding: 11px 13px;
+    border-radius: 3px; line-height: 1.4;
+  }
+  input:focus, textarea:focus, button:focus-visible { outline: 2px solid var(--pen); outline-offset: 1px; }
+  .auth-card button.submit {
+    width: 100%; background: var(--ink); color: var(--paper); border: none;
+    font-family: 'Source Serif 4', serif; font-weight: 600; font-style: italic; font-size: 1.05rem;
+    padding: 12px; border-radius: 3px; cursor: pointer; margin-top: 6px;
+  }
+  .auth-card button.submit:hover { background: var(--pen); }
+  .auth-card .switch { text-align: center; font-size: 0.85rem; margin-top: 16px; color: var(--ink-soft); }
+  .auth-card .switch a { cursor: pointer; }
+  .auth-error { color: var(--pen); font-size: 0.85rem; margin-bottom: 14px; min-height: 1em; }
+
+  /* ---------- Dashboard ---------- */
+  main.dash { max-width: 1180px; margin: 0 auto; padding: 36px 32px 80px; display: grid; grid-template-columns: 1fr 1fr; border-left: 1px solid var(--rule); border-right: 1px solid var(--rule); }
+  @media (max-width: 880px) { main.dash { grid-template-columns: 1fr; } .dash .col-left { border-right: none !important; border-bottom: 1px solid var(--rule); } }
+  .dash .col { padding: 8px 34px 34px; }
+  .dash .col-left { border-right: 1px solid var(--rule); }
+  .col-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 18px; padding-top: 18px; }
+  .col-head .mark { color: var(--pen); font-size: 1.1rem; }
+  .col-head h2 { font-size: 1.35rem; font-weight: 600; margin: 0; }
+  textarea#d-text { min-height: 130px; resize: vertical; }
+  textarea#d-samples { min-height: 150px; resize: vertical; }
+  .two-up { display: grid; grid-template-columns: 1fr; gap: 16px; }
+  .hint { font-size: 0.78rem; color: var(--ink-soft); opacity: 0.75; margin-top: 4px; }
+  button#run { background: var(--ink); color: var(--paper); border: none; font-family: 'Source Serif 4', serif; font-weight: 600; font-style: italic; font-size: 1.05rem; padding: 13px 22px; border-radius: 3px; cursor: pointer; width: 100%; margin-top: 4px; }
+  button#run:hover { background: var(--pen); }
+  button#run:disabled { background: var(--ink-soft); cursor: progress; }
+  .usage-bar-wrap { margin-top: 18px; }
+  .usage-bar { height: 6px; background: var(--rule); border-radius: 3px; overflow: hidden; margin-top: 6px; }
+  .usage-bar-fill { height: 100%; background: var(--pen); }
+  .status-line { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--ink-soft); margin-bottom: 16px; min-height: 20px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--rule); flex-shrink: 0; }
+  .dot.busy { background: var(--highlight); animation: pulse 1s infinite ease-in-out; }
+  .dot.ready { background: var(--ok); }
+  .dot.error { background: var(--pen); }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+  .output-box { background: var(--paper-raised); border: 1px solid var(--rule); border-left: 3px solid var(--pen); border-radius: 3px; padding: 20px 22px; min-height: 220px; font-family: 'Source Serif 4', serif; font-size: 1.05rem; line-height: 1.65; white-space: pre-wrap; }
+  .output-box.empty { color: var(--ink-soft); font-style: italic; font-size: 0.95rem; }
+  .dna-card { margin-top: 20px; border-top: 1px dashed var(--rule); padding-top: 16px; }
+  .dna-card summary { cursor: pointer; font-size: 0.85rem; color: var(--teal); font-weight: 500; list-style: none; }
+  .dna-card summary::-webkit-details-marker { display: none; }
+  .dna-card summary::before { content: "＋ "; }
+  .dna-card[open] summary::before { content: "－ "; }
+  .dna-grid { display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; font-size: 0.85rem; margin-top: 12px; }
+  .dna-grid dt { color: var(--ink-soft); }
+  .dna-grid dd { margin: 0; }
+  .copy-btn { background: none; border: 1px solid var(--rule); color: var(--ink-soft); font-family: 'IBM Plex Sans', sans-serif; font-size: 0.78rem; padding: 6px 12px; border-radius: 3px; cursor: pointer; margin-top: 14px; }
+  .copy-btn:hover { border-color: var(--ink); color: var(--ink); }
+
+  footer { max-width: 1180px; margin: 0 auto; padding: 20px 32px 40px; font-size: 0.78rem; color: var(--ink-soft); display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+  footer a { cursor: pointer; }
+  footer .sep { color: var(--rule); }
+
+  @media (prefers-reduced-motion: reduce) { .dot.busy { animation: none; } }
+</style>
+</head>
+<body>
+
+<nav class="top">
+  <div class="brand">Word<em>loom</em></div>
+  <div class="nav-actions" id="nav-actions">
+    <button id="nav-login">Log in</button>
+    <a class="btn btn-primary" id="nav-signup">Sign up</a>
+  </div>
+</nav>
+
+<!-- ============ LANDING ============ -->
+<div id="view-landing">
+  <div class="hero">
+    <h1>Write it once. <em>Sound like you</em> every time.</h1>
+    <p class="lede">Paste a rough draft and a sample of your own writing. Wordloom rewrites the draft in your rhythm, your tone, and your local references — so the version you publish still sounds like you.</p>
+    <div class="cta-row">
+      <button class="primary" id="hero-signup">Start free</button>
+      <button class="secondary" id="hero-login">I have an account</button>
+    </div>
+  </div>
+
+  <section class="pricing">
+    <h2>Plans</h2>
+    <div class="sub">Every plan includes the full voice-matching pipeline. Upgrade when you need more rewrites per day.</div>
+    <div class="plans">
+      <div class="plan-card">
+        <h3>Free</h3>
+        <div class="price">$0<span> / month</span></div>
+        <ul>
+          <li>5 rewrites per day</li>
+          <li>Voice DNA detection</li>
+          <li>Single writing profile</li>
+        </ul>
+      </div>
+      <div class="plan-card featured">
+        <h3>Pro</h3>
+        <div class="price">$19<span> / month</span></div>
+        <ul>
+          <li>200 rewrites per day</li>
+          <li>Voice DNA detection</li>
+          <li>Priority processing</li>
+          <li>Email support</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============ AUTH ============ -->
+<div id="view-auth" class="hidden">
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <h2 id="auth-title">Log in</h2>
+      <div class="sub" id="auth-sub">Welcome back.</div>
+      <div class="auth-error" id="auth-error"></div>
+      <div class="field">
+        <label for="auth-email">Email</label>
+        <input type="email" id="auth-email" placeholder="you@studio.com">
+      </div>
+      <div class="field">
+        <label for="auth-password">Password</label>
+        <input type="password" id="auth-password" placeholder="At least 8 characters">
+      </div>
+      <button class="submit" id="auth-submit">Log in</button>
+      <div class="switch">
+        <span id="auth-switch-text">Don't have an account? <a id="auth-switch-link">Sign up</a></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ ACQUIRE ============ -->
+<div id="view-acquire" class="hidden">
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <h2>Acquire this site</h2>
+      <div class="sub">Interested in buying Wordloom? Reach out directly.</div>
+      <div class="dna-grid" style="grid-template-columns: auto 1fr; margin-top: 4px;">
+        <dt>Email</dt><dd><a href="mailto:nkwoalachinelo@gmail.com">nkwoalachinelo@gmail.com</a></dd>
+        <dt>WhatsApp</dt><dd><a href="https://wa.me/2349129543151" target="_blank" rel="noopener">09129543151</a></dd>
+      </div>
+      <button class="submit" id="acquire-back" style="margin-top: 22px;">Back</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ DASHBOARD ============ -->
+<div id="view-dash" class="hidden">
+  <main class="dash">
+    <section class="col col-left">
+      <div class="col-head"><span class="mark">✒</span><h2>Manuscript</h2></div>
+
+      <div class="field">
+        <label for="d-text">Text to rewrite</label>
+        <textarea id="d-text" placeholder="Paste the passage you want rewritten…"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="d-samples">Your writing, for reference (500–1000 words)</label>
+        <textarea id="d-samples" placeholder="Paste a few paragraphs you've actually written…"></textarea>
+        <div class="hint">The more natural and varied this sample, the better the match.</div>
+      </div>
+
+      <div class="field">
+        <label for="d-location">Location</label>
+        <input type="text" id="d-location" placeholder="Onitsha, Anambra, Nigeria">
+      </div>
+
+      <button id="run">Rewrite it</button>
+
+      <div class="usage-bar-wrap">
+        <div class="hint" id="usage-label">—</div>
+        <div class="usage-bar"><div class="usage-bar-fill" id="usage-fill" style="width:0%"></div></div>
+      </div>
+    </section>
+
+    <section class="col col-right">
+      <div class="col-head"><span class="mark">◆</span><h2>Result</h2></div>
+
+      <div class="status-line">
+        <span class="dot" id="status-dot"></span>
+        <span id="status-text">Waiting for a manuscript.</span>
+      </div>
+
+      <div class="output-box empty" id="output">Your rewritten text will appear here.</div>
+      <button class="copy-btn" id="copy-btn" style="display:none;">Copy text</button>
+
+      <details class="dna-card" id="dna-card" style="display:none;">
+        <summary>Voice DNA detected</summary>
+        <dl class="dna-grid" id="dna-grid"></dl>
+      </details>
+    </section>
+  </main>
+</div>
+
+<footer>
+  <span>Wordloom · <span id="api-target"></span> · <a id="footer-config">change API endpoint</a></span>
+  <span class="sep">|</span>
+  <a id="footer-acquire">Acquire this site</a>
+</footer>
+
+<script>
+  // ---------- Config ----------
+  // Session token lives only in memory for this tab — refreshing the page
+  // requires logging in again. For a production deploy, replace this with
+  // an httpOnly session cookie set by the backend, which is more secure
+  // than any client-side token storage.
+  let API_BASE = 'http://localhost:8000';
+  let sessionToken = null;
+  let sessionUser = null;
+  let authMode = 'login'; // 'login' | 'signup'
+
+  document.getElementById('api-target').textContent = API_BASE;
+  document.getElementById('footer-config').addEventListener('click', () => {
+    const val = prompt('API base URL', API_BASE);
+    if (val) { API_BASE = val.replace(/\/$/, ''); document.getElementById('api-target').textContent = API_BASE; }
+  });
+
+  // ---------- View switching ----------
+  const views = {
+    landing: document.getElementById('view-landing'),
+    auth: document.getElementById('view-auth'),
+    dash: document.getElementById('view-dash'),
+    acquire: document.getElementById('view-acquire'),
+  };
+  let previousView = 'landing';
+  function showView(name) {
+    const current = Object.keys(views).find(k => !views[k].classList.contains('hidden'));
+    if (current && current !== name) previousView = current;
+    Object.values(views).forEach(v => v.classList.add('hidden'));
+    views[name].classList.remove('hidden');
+  }
+
+  document.getElementById('footer-acquire').addEventListener('click', () => showView('acquire'));
+  document.getElementById('acquire-back').addEventListener('click', () => showView(previousView === 'acquire' ? 'landing' : previousView));
+
+  function renderNav() {
+    const wrap = document.getElementById('nav-actions');
+    if (sessionUser) {
+      wrap.innerHTML = `<span id="nav-usage"></span><button id="nav-logout">Log out</button>`;
+      document.getElementById('nav-logout').addEventListener('click', logout);
+      refreshUsageLabel();
+    } else {
+      wrap.innerHTML = `<button id="nav-login">Log in</button><a class="btn btn-primary" id="nav-signup">Sign up</a>`;
+      document.getElementById('nav-login').addEventListener('click', () => openAuth('login'));
+      document.getElementById('nav-signup').addEventListener('click', () => openAuth('signup'));
+    }
+  }
+
+  function openAuth(mode) {
+    authMode = mode;
+    document.getElementById('auth-error').textContent = '';
+    document.getElementById('auth-email').value = '';
+    document.getElementById('auth-password').value = '';
+    if (mode === 'login') {
+      document.getElementById('auth-title').textContent = 'Log in';
+      document.getElementById('auth-sub').textContent = 'Welcome back.';
+      document.getElementById('auth-submit').textContent = 'Log in';
+      document.getElementById('auth-switch-text').innerHTML = `Don't have an account? <a id="auth-switch-link">Sign up</a>`;
+    } else {
+      document.getElementById('auth-title').textContent = 'Sign up';
+      document.getElementById('auth-sub').textContent = 'Free plan includes 5 rewrites a day.';
+      document.getElementById('auth-submit').textContent = 'Create account';
+      document.getElementById('auth-switch-text').innerHTML = `Already have an account? <a id="auth-switch-link">Log in</a>`;
+    }
+    document.getElementById('auth-switch-link').addEventListener('click', () => openAuth(mode === 'login' ? 'signup' : 'login'));
+    showView('auth');
+  }
+
+  document.getElementById('hero-signup').addEventListener('click', () => openAuth('signup'));
+  document.getElementById('hero-login').addEventListener('click', () => openAuth('login'));
+  document.getElementById('nav-login').addEventListener('click', () => openAuth('login'));
+  document.getElementById('nav-signup').addEventListener('click', () => openAuth('signup'));
+
+  document.getElementById('auth-submit').addEventListener('click', async () => {
+    const email = document.getElementById('auth-email').value.trim();
+    const password = document.getElementById('auth-password').value;
+    const errEl = document.getElementById('auth-error');
+    errEl.textContent = '';
+
+    if (!email || !password) { errEl.textContent = 'Enter an email and password.'; return; }
+
+    const endpoint = authMode === 'login' ? '/login' : '/signup';
+    try {
+      const res = await fetch(API_BASE + endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+      const payload = await res.json().catch(() => null);
+      if (!res.ok || !payload) {
+        errEl.textContent = (payload && payload.detail) || 'Something went wrong.';
+        return;
+      }
+      sessionToken = payload.token;
+      sessionUser = { email: payload.email, plan: payload.plan };
+      renderNav();
+      showView('dash');
+      refreshUsageLabel();
+    } catch {
+      errEl.textContent = "Couldn't reach the backend. Check the API endpoint.";
+    }
+  });
+
+  function logout() {
+    sessionToken = null;
+    sessionUser = null;
+    renderNav();
+    showView('landing');
+  }
+
+  async function refreshUsageLabel() {
+    if (!sessionToken) return;
+    try {
+      const res = await fetch(API_BASE + '/me', {
+        headers: { Authorization: 'Bearer ' + sessionToken },
+      });
+      const payload = await res.json().catch(() => null);
+      if (!res.ok || !payload) return;
+      const navUsage = document.getElementById('nav-usage');
+      if (navUsage) navUsage.textContent = `${payload.used_today}/${payload.daily_limit} today · ${payload.plan}`;
+      const label = document.getElementById('usage-label');
+      const fill = document.getElementById('usage-fill');
+      if (label) label.textContent = `${payload.used_today} of ${payload.daily_limit} rewrites used today (${payload.plan} plan)`;
+      if (fill) fill.style.width = Math.min(100, (payload.used_today / payload.daily_limit) * 100) + '%';
+    } catch { /* usage label is best-effort */ }
+  }
+
+  // ---------- Dashboard: run rewrite ----------
+  const runBtn = document.getElementById('run');
+  const outputEl = document.getElementById('output');
+  const statusDot = document.getElementById('status-dot');
+  const statusText = document.getElementById('status-text');
+  const copyBtn = document.getElementById('copy-btn');
+  const dnaCard = document.getElementById('dna-card');
+  const dnaGrid = document.getElementById('dna-grid');
+
+  function setStatus(state, message) {
+    statusDot.className = 'dot' + (state ? ' ' + state : '');
+    statusText.textContent = message;
+  }
+
+  function escapeHtml(str) {
+    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  runBtn.addEventListener('click', async () => {
+    if (!sessionToken) { openAuth('login'); return; }
+
+    const text = document.getElementById('d-text').value.trim();
+    const samples = document.getElementById('d-samples').value.trim();
+    const location = document.getElementById('d-location').value.trim();
+
+    if (!text) { setStatus('error', 'Add the text you want rewritten.'); return; }
+    if (!samples) { setStatus('error', 'Add a sample of your own writing.'); return; }
+    if (!location) { setStatus('error', 'Add a location.'); return; }
+
+    runBtn.disabled = true;
+    copyBtn.style.display = 'none';
+    dnaCard.style.display = 'none';
+    outputEl.classList.add('empty');
+    outputEl.textContent = '';
+    setStatus('busy', 'Rewriting — this runs several passes, so it can take a moment…');
+
+    try {
+      const res = await fetch(API_BASE + '/humanize', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + sessionToken,
+        },
+        body: JSON.stringify({ text, voice_samples: samples, location }),
+      });
+      const payload = await res.json().catch(() => null);
+
+      if (res.status === 401) {
+        setStatus('error', 'Your session expired. Please log in again.');
+        logout();
+        openAuth('login');
+        return;
+      }
+
+      if (!res.ok || !payload) {
+        setStatus('error', (payload && payload.detail) || `Request failed (${res.status}).`);
+        outputEl.classList.add('empty');
+        outputEl.textContent = 'Nothing came back. Fix the issue above and try again.';
+        return;
+      }
+
+      outputEl.classList.remove('empty');
+      outputEl.textContent = payload.humanized_text || '(empty response)';
+      setStatus('ready', 'Done.');
+      copyBtn.style.display = 'inline-block';
+
+      const dna = payload.voice_dna;
+      if (dna) {
+        dnaGrid.innerHTML = `
+          <dt>Tone</dt><dd>${escapeHtml(dna.tone ?? '—')}</dd>
+          <dt>Location</dt><dd>${escapeHtml(dna.location ?? '—')}</dd>
+          <dt>Currency</dt><dd>${escapeHtml(dna.currency ?? '—')}</dd>
+          <dt>Avg. sentence length</dt><dd>${dna.avg_words ?? '—'} words</dd>
+          <dt>Local references</dt><dd>${(dna.local_refs || []).map(escapeHtml).join(', ') || '—'}</dd>
+          <dt>Filler words</dt><dd>${(dna.filler || []).map(escapeHtml).join(', ') || '—'}</dd>
+        `;
+        dnaCard.style.display = 'block';
+      }
+
+      refreshUsageLabel();
+    } catch {
+      setStatus('error', "Couldn't reach the backend. Check the API endpoint and that it's running.");
+      outputEl.classList.add('empty');
+      outputEl.textContent = 'Nothing came back. Fix the issue above and try again.';
+    } finally {
+      runBtn.disabled = false;
+    }
+  });
+
+  copyBtn.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(outputEl.textContent);
+      copyBtn.textContent = 'Copied';
+      setTimeout(() => { copyBtn.textContent = 'Copy text'; }, 1500);
+    } catch {
+      copyBtn.textContent = "Couldn't copy";
+    }
+  });
+
+  showView('landing');
+</script>
+
+</body>
+</html>
