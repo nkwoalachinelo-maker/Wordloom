@@ -62,7 +62,7 @@ client = OpenAI(
     base_url="https://api.groq.com/openai/v1",
 )
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+pwd_context = CryptContext(schemes=["bcrypt_sha256"], deprecated="auto")
 
 app = FastAPI(title="Wordloom API")
 app.add_middleware(
