@@ -8,7 +8,7 @@ Required environment variables:
     GROQ_API_KEY    Your Groq API key (console.groq.com)
     JWT_SECRET      Long random string used to sign session tokens
 Optional:
-    GROQ_MODEL      Defaults to "llama-3.3-70b-versatile" — see
+    GROQ_MODEL      Defaults to "llama-3.1-8b-instant" — see
                      console.groq.com/docs/models for the current list
     DB_PATH         Defaults to "wordloom.db"
     CORS_ORIGINS    Comma-separated allowed origins, defaults to "*"
@@ -47,7 +47,7 @@ logger = logging.getLogger("wordloom")
 # Groq exposes an OpenAI-compatible API, so we use the plain OpenAI client
 # pointed at Groq's base URL instead of AzureOpenAI.
 GROQ_API_KEY = os.environ["GROQ_API_KEY"]
-MODEL = os.environ.get("GROQ_MODEL", "llama-3.3-70b-versatile")
+MODEL = os.environ.get("GROQ_MODEL", "llama-3.1-8b-instant")
 JWT_SECRET = os.environ["JWT_SECRET"]
 JWT_ALGO = "HS256"
 JWT_EXPIRE_HOURS = 24
