@@ -122,6 +122,13 @@
   .col-head .mark { color: var(--pen); font-size: 1.1rem; }
   .col-head h2 { font-size: 1.35rem; font-weight: 600; margin: 0; }
   textarea#d-text { min-height: 130px; resize: vertical; }
+  .file-upload-row { display: flex; align-items: center; gap: 10px; margin-top: 8px; flex-wrap: wrap; }
+  .file-upload-btn {
+    display: inline-block; font-size: 0.82rem; color: var(--teal);
+    border: 1px solid var(--rule); border-radius: 3px; padding: 6px 12px;
+    cursor: pointer; background: var(--paper-raised);
+  }
+  .file-upload-btn:hover { border-color: var(--teal); }
   textarea#d-samples { min-height: 150px; resize: vertical; }
   .two-up { display: grid; grid-template-columns: 1fr; gap: 16px; }
   .hint { font-size: 0.78rem; color: var(--ink-soft); opacity: 0.75; margin-top: 4px; }
@@ -252,6 +259,11 @@
       <div class="field">
         <label for="d-text">Text to rewrite</label>
         <textarea id="d-text" placeholder="Paste the passage you want rewritten…"></textarea>
+        <div class="file-upload-row">
+          <label class="file-upload-btn" for="d-file">📄 Upload a file instead</label>
+          <input type="file" id="d-file" accept=".txt,.pdf,.docx" style="display:none;">
+          <span class="hint" id="d-file-status"></span>
+        </div>
       </div>
 
       <div class="field">
@@ -300,6 +312,13 @@
   <a id="footer-acquire">Acquire this site</a>
 </footer>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.7.0/mammoth.browser.min.js"></script>
+<script>
+  if (window['pdfjsLib']) {
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  }
+</script>
 <script>
   // ---------- Config ----------
   // Session token lives only in memory for this tab — refreshing the page
@@ -449,6 +468,60 @@
   }
 
   // ---------- Dashboard: run rewrite ----------
+  // ---------- File upload: extract text from .txt/.pdf/.docx ----------
+  const fileInput = document.getElementById('d-file');
+  const fileStatus = document.getElementById('d-file-status');
+  const textArea = document.getElementById('d-text');
+
+  fileInput.addEventListener('change', async () => {
+    const file = fileInput.files[0];
+    if (!file) return;
+
+    fileStatus.textContent = `Reading ${file.name}…`;
+    const ext = file.name.split('.').pop().toLowerCase();
+
+    try {
+      let extracted = '';
+
+      if (ext === 'txt') {
+        extracted = await file.text();
+      } else if (ext === 'pdf') {
+        if (!window.pdfjsLib) throw new Error('PDF reader failed to load.');
+        const buffer = await file.arrayBuffer();
+        const pdf = await pdfjsLib.getDocument({ data: buffer }).promise;
+        const pages = [];
+        for (let i = 1; i <= pdf.numPages; i++) {
+          const page = await pdf.getPage(i);
+          const content = await page.getTextContent();
+          pages.push(content.items.map(item => item.str).join(' '));
+        }
+        extracted = pages.join('\n\n');
+      } else if (ext === 'docx') {
+        if (!window.mammoth) throw new Error('Word reader failed to load.');
+        const buffer = await file.arrayBuffer();
+        const result = await mammoth.extractRawText({ arrayBuffer: buffer });
+        extracted = result.value;
+      } else if (ext === 'doc') {
+        throw new Error('Old .doc format isn\u2019t supported — please save as .docx and try again.');
+      } else {
+        throw new Error('Unsupported file type. Use .txt, .pdf, or .docx.');
+      }
+
+      extracted = extracted.trim();
+      if (!extracted) {
+        fileStatus.textContent = 'No readable text found in that file.';
+        return;
+      }
+
+      textArea.value = extracted;
+      fileStatus.textContent = `Loaded ${file.name} (${extracted.length.toLocaleString()} characters).`;
+    } catch (err) {
+      fileStatus.textContent = err.message || 'Could not read that file.';
+    } finally {
+      fileInput.value = '';
+    }
+  });
+
   const runBtn = document.getElementById('run');
   const outputEl = document.getElementById('output');
   const statusDot = document.getElementById('status-dot');
