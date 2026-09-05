@@ -65,6 +65,10 @@
   .hero h1 em { font-style: italic; color: var(--pen); }
   .hero p.lede { font-size: 1.15rem; color: var(--ink-soft); line-height: 1.55; max-width: 56ch; margin: 0 0 28px; }
   .hero .cta-row { display: flex; gap: 12px; }
+  .free-banner {
+    display: inline-block; background: var(--paper-raised); border: 1px solid var(--highlight);
+    color: var(--ink); font-size: 0.9rem; padding: 8px 14px; border-radius: 3px; margin-bottom: 18px;
+  }
   .hero .cta-row button {
     font-family: 'Source Serif 4', serif; font-style: italic; font-weight: 600;
     font-size: 1.05rem; padding: 13px 24px; border-radius: 3px; cursor: pointer; border: none;
@@ -90,6 +94,22 @@
   .plan-card li { padding: 5px 0; border-top: 1px dashed var(--rule); }
   .plan-card li:first-child { border-top: none; }
 
+  .reviews-section { margin-top: 10px; }
+  .reviews-list { display: flex; flex-direction: column; gap: 14px; margin-bottom: 30px; }
+  .review-card {
+    border: 1px solid var(--rule); background: var(--paper-raised); border-radius: 4px;
+    padding: 16px 18px;
+  }
+  .review-card .stars { color: var(--highlight); font-size: 0.95rem; letter-spacing: 1px; }
+  .review-card .review-name { font-weight: 600; font-size: 0.9rem; margin-left: 8px; }
+  .review-card .review-date { color: var(--ink-soft); font-size: 0.78rem; float: right; }
+  .review-card p { margin: 8px 0 0; font-size: 0.92rem; line-height: 1.5; }
+  .review-form {
+    max-width: 480px; border: 1px solid var(--rule); border-left: 3px solid var(--pen);
+    background: var(--paper-raised); border-radius: 3px; padding: 22px 24px;
+  }
+  .review-form h3 { margin: 0 0 14px; font-size: 1.1rem; }
+
   /* ---------- Auth ---------- */
   .auth-wrap { max-width: 420px; margin: 60px auto; padding: 0 32px; }
   .auth-card { border: 1px solid var(--rule); background: var(--paper-raised); border-left: 3px solid var(--pen); border-radius: 3px; padding: 30px 28px; }
@@ -97,7 +117,7 @@
   .auth-card .sub { color: var(--ink-soft); font-size: 0.9rem; margin-bottom: 20px; }
   .field { margin-bottom: 16px; }
   .field label { display: block; font-size: 0.85rem; color: var(--ink-soft); margin-bottom: 6px; }
-  input[type="text"], input[type="email"], input[type="password"], textarea {
+  input[type="text"], input[type="email"], input[type="password"], textarea, select {
     width: 100%; background: #fff; border: 1px solid var(--rule); color: var(--ink);
     font-family: 'IBM Plex Sans', sans-serif; font-size: 0.95rem; padding: 11px 13px;
     border-radius: 3px; line-height: 1.4;
@@ -155,6 +175,7 @@
   .dna-grid dt { color: var(--ink-soft); }
   .dna-grid dd { margin: 0; }
   .copy-btn { background: none; border: 1px solid var(--rule); color: var(--ink-soft); font-family: 'IBM Plex Sans', sans-serif; font-size: 0.78rem; padding: 6px 12px; border-radius: 3px; cursor: pointer; margin-top: 14px; }
+  .download-row { display: flex; flex-wrap: wrap; }
   .copy-btn:hover { border-color: var(--ink); color: var(--ink); }
 
   footer { max-width: 1180px; margin: 0 auto; padding: 20px 32px 40px; font-size: 0.78rem; color: var(--ink-soft); display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
@@ -179,6 +200,7 @@
   <div class="hero">
     <h1>Write it once. <em>Sound like you</em> every time.</h1>
     <p class="lede">Paste a rough draft and a sample of your own writing. Wordloom rewrites the draft in your rhythm, your tone, and your local references — so the version you publish still sounds like you.</p>
+    <div class="free-banner">🎉 Free to use right now — no card required.</div>
     <div class="cta-row">
       <button class="primary" id="hero-signup">Start free</button>
       <button class="secondary" id="hero-login">I have an account</button>
@@ -187,7 +209,7 @@
 
   <section class="pricing">
     <h2>Plans</h2>
-    <div class="sub">Every plan includes the full voice-matching pipeline. Upgrade when you need more rewrites per day.</div>
+    <div class="sub">Wordloom is completely free while in early access. Paid plans are coming soon.</div>
     <div class="plans">
       <div class="plan-card">
         <h3>Free</h3>
@@ -200,7 +222,7 @@
       </div>
       <div class="plan-card featured">
         <h3>Pro</h3>
-        <div class="price">$19<span> / month</span></div>
+        <div class="price">Coming soon</div>
         <ul>
           <li>200 rewrites per day</li>
           <li>Voice DNA detection</li>
@@ -208,6 +230,38 @@
           <li>Email support</li>
         </ul>
       </div>
+    </div>
+  </section>
+
+  <section class="pricing reviews-section">
+    <h2>Reviews</h2>
+    <div class="sub">What people are saying — and you can leave your own below.</div>
+    <div id="reviews-list" class="reviews-list">
+      <div class="hint">Loading reviews…</div>
+    </div>
+
+    <div class="review-form">
+      <h3>Leave a review</h3>
+      <div class="auth-error" id="review-error"></div>
+      <div class="field">
+        <label for="review-name">Your name</label>
+        <input type="text" id="review-name" placeholder="How you'd like to be shown">
+      </div>
+      <div class="field">
+        <label for="review-rating">Rating</label>
+        <select id="review-rating">
+          <option value="5">★★★★★ (5)</option>
+          <option value="4">★★★★☆ (4)</option>
+          <option value="3">★★★☆☆ (3)</option>
+          <option value="2">★★☆☆☆ (2)</option>
+          <option value="1">★☆☆☆☆ (1)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="review-comment">Comment</label>
+        <textarea id="review-comment" placeholder="What did you think?" style="min-height:80px;"></textarea>
+      </div>
+      <button class="submit" id="review-submit">Submit review</button>
     </div>
   </section>
 </div>
@@ -277,6 +331,18 @@
         <input type="text" id="d-location" placeholder="Onitsha, Anambra, Nigeria">
       </div>
 
+      <div class="field">
+        <label for="d-style">Style</label>
+        <select id="d-style">
+          <option value="match my voice">Match my voice (default)</option>
+          <option value="professional">Professional</option>
+          <option value="casual">Casual</option>
+          <option value="persuasive">Persuasive</option>
+          <option value="friendly">Friendly</option>
+          <option value="academic">Academic</option>
+        </select>
+      </div>
+
       <button id="run">Rewrite it</button>
 
       <div class="usage-bar-wrap">
@@ -294,7 +360,11 @@
       </div>
 
       <div class="output-box empty" id="output">Your rewritten text will appear here.</div>
-      <button class="copy-btn" id="copy-btn" style="display:none;">Copy text</button>
+      <div class="download-row" id="download-row" style="display:none; gap:8px; margin-top:14px;">
+        <button class="copy-btn" id="copy-btn">Copy text</button>
+        <button class="copy-btn" id="download-txt-btn">Download .txt</button>
+        <button class="copy-btn" id="download-docx-btn">Download .docx</button>
+      </div>
 
       <details class="dna-card" id="dna-card" style="display:none;">
         <summary>Voice DNA detected</summary>
@@ -314,6 +384,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.7.0/mammoth.browser.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script>
   if (window['pdfjsLib']) {
     pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
@@ -545,13 +616,14 @@
     const text = document.getElementById('d-text').value.trim();
     const samples = document.getElementById('d-samples').value.trim();
     const location = document.getElementById('d-location').value.trim();
+    const style = document.getElementById('d-style').value;
 
     if (!text) { setStatus('error', 'Add the text you want rewritten.'); return; }
     if (!samples) { setStatus('error', 'Add a sample of your own writing.'); return; }
     if (!location) { setStatus('error', 'Add a location.'); return; }
 
     runBtn.disabled = true;
-    copyBtn.style.display = 'none';
+    document.getElementById('download-row').style.display = 'none';
     dnaCard.style.display = 'none';
     outputEl.classList.add('empty');
     outputEl.textContent = '';
@@ -564,7 +636,7 @@
           'Content-Type': 'application/json',
           Authorization: 'Bearer ' + sessionToken,
         },
-        body: JSON.stringify({ text, voice_samples: samples, location }),
+        body: JSON.stringify({ text, voice_samples: samples, location, style }),
       }, {
         timeoutMs: 90000,
         onWaking: () => setStatus('busy', 'Server is waking up, hang on…'),
@@ -588,7 +660,7 @@
       outputEl.classList.remove('empty');
       outputEl.textContent = payload.humanized_text || '(empty response)';
       setStatus('ready', 'Done.');
-      copyBtn.style.display = 'inline-block';
+      document.getElementById('download-row').style.display = 'flex';
 
       const dna = payload.voice_dna;
       if (dna) {
@@ -620,6 +692,119 @@
       setTimeout(() => { copyBtn.textContent = 'Copy text'; }, 1500);
     } catch {
       copyBtn.textContent = "Couldn't copy";
+    }
+  });
+
+  // ---------- Downloadable output ----------
+  function downloadBlob(filename, blob) {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  }
+
+  document.getElementById('download-txt-btn').addEventListener('click', () => {
+    const blob = new Blob([outputEl.textContent], { type: 'text/plain' });
+    downloadBlob('wordloom-rewrite.txt', blob);
+  });
+
+  document.getElementById('download-docx-btn').addEventListener('click', async () => {
+    if (!window.JSZip) { alert('Document generator failed to load.'); return; }
+    const paragraphs = outputEl.textContent
+      .split(/\n+/)
+      .filter(p => p.trim())
+      .map(p => `<w:p><w:r><w:t xml:space="preserve">${escapeXml(p)}</w:t></w:r></w:p>`)
+      .join('');
+
+    const documentXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+  <w:body>${paragraphs}</w:body>
+</w:document>`;
+
+    const contentTypesXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
+  <Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>
+  <Default Extension="xml" ContentType="application/xml"/>
+  <Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/>
+</Types>`;
+
+    const relsXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+  <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/>
+</Relationships>`;
+
+    const zip = new JSZip();
+    zip.file("[Content_Types].xml", contentTypesXml);
+    zip.folder("_rels").file(".rels", relsXml);
+    zip.folder("word").file("document.xml", documentXml);
+
+    const blob = await zip.generateAsync({ type: "blob", mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document" });
+    downloadBlob('wordloom-rewrite.docx', blob);
+  });
+
+  function escapeXml(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  // ---------- Reviews ----------
+  async function loadReviews() {
+    const listEl = document.getElementById('reviews-list');
+    try {
+      const res = await fetchWithRetry(API_BASE + '/reviews');
+      const reviews = await res.json();
+      if (!res.ok || !Array.isArray(reviews)) throw new Error();
+      if (!reviews.length) {
+        listEl.innerHTML = '<div class="hint">No reviews yet — be the first.</div>';
+        return;
+      }
+      listEl.innerHTML = reviews.map(r => `
+        <div class="review-card">
+          <span class="review-date">${new Date(r.created_at).toLocaleDateString()}</span>
+          <span class="stars">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</span>
+          <span class="review-name">${escapeHtml(r.name)}</span>
+          <p>${escapeHtml(r.comment)}</p>
+        </div>
+      `).join('');
+    } catch {
+      listEl.innerHTML = '<div class="hint">Couldn\u2019t load reviews right now.</div>';
+    }
+  }
+  loadReviews();
+
+  document.getElementById('review-submit').addEventListener('click', async () => {
+    const name = document.getElementById('review-name').value.trim();
+    const rating = parseInt(document.getElementById('review-rating').value, 10);
+    const comment = document.getElementById('review-comment').value.trim();
+    const errEl = document.getElementById('review-error');
+    errEl.textContent = '';
+
+    if (!name) { errEl.textContent = 'Add your name.'; return; }
+    if (!comment) { errEl.textContent = 'Add a comment.'; return; }
+
+    try {
+      const res = await fetchWithRetry(API_BASE + '/reviews', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, rating, comment }),
+      });
+      const payload = await res.json().catch(() => null);
+      if (!res.ok) {
+        errEl.textContent = (payload && payload.detail) || 'Could not submit review.';
+        return;
+      }
+      document.getElementById('review-name').value = '';
+      document.getElementById('review-comment').value = '';
+      loadReviews();
+    } catch {
+      errEl.textContent = "Couldn't reach the backend.";
     }
   });
 

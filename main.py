@@ -117,6 +117,15 @@ def init_db():
                 FOREIGN KEY(user_id) REFERENCES users(id)
             )"""
         )
+        conn.execute(
+            """CREATE TABLE IF NOT EXISTS reviews (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL,
+                rating INTEGER NOT NULL,
+                comment TEXT NOT NULL,
+                created_at TEXT NOT NULL
+            )"""
+        )
         conn.commit()
 
 
@@ -160,6 +169,7 @@ class HumanizeRequest(BaseModel):
     text: str
     voice_samples: str
     location: str
+    style: str = "match my voice"  # e.g. "professional", "casual", "persuasive"
 
 
 class HumanizeResponse(BaseModel):
@@ -167,6 +177,19 @@ class HumanizeResponse(BaseModel):
     voice_dna: VoiceDNA
     used_today: int
     daily_limit: int
+
+
+class ReviewCreate(BaseModel):
+    name: str = Field(min_length=1, max_length=60)
+    rating: int = Field(ge=1, le=5)
+    comment: str = Field(min_length=1, max_length=500)
+
+
+class ReviewOut(BaseModel):
+    name: str
+    rating: int
+    comment: str
+    created_at: str
 
 
 # ========== AUTH HELPERS ==========
@@ -299,10 +322,23 @@ def _chat(prompt: str) -> str:
     return res.choices[0].message.content
 
 
-def llm_rewrite(text: str, dna: VoiceDNA) -> str:
+STYLE_INSTRUCTIONS = {
+    "match my voice": "",
+    "professional": "Write in a polished, professional register suitable for business or formal correspondence.",
+    "casual": "Write in a relaxed, conversational register, like talking to a friend.",
+    "persuasive": "Write persuasively, building a clear case and calling the reader to action.",
+    "friendly": "Write in a warm, approachable, friendly register.",
+    "academic": "Write in a precise, formal, academic register with careful qualifications.",
+}
+
+
+def llm_rewrite(text: str, dna: VoiceDNA, style: str = "match my voice") -> str:
     # Combined into a single call (was 3 sequential calls) — cuts total
     # latency roughly 3x, which matters a lot on a free-tier host where
     # each round trip can take several seconds.
+    style_line = STYLE_INSTRUCTIONS.get(style.lower().strip(), "")
+    style_instruction = f"8. {style_line}" if style_line else ""
+
     prompt = f"""Rewrite the text below in a single pass, applying all of these
 instructions together:
 
@@ -313,6 +349,7 @@ instructions together:
 5. Write in this tone: {dna.tone}.
 6. Cut unnecessary fluff.
 7. Add one clear opinion and one specific example.
+{style_instruction}
 
 Return only the rewritten text, with no preamble or explanation.
 
@@ -368,10 +405,10 @@ def humanize(req: HumanizeRequest, user: sqlite3.Row = Depends(get_current_user)
             )
 
     dna = extract_voice_dna(req.voice_samples, req.location)
-    text = llm_rewrite(req.text, dna)
+    text = llm_rewrite(req.text, dna, req.style)
     text = chaos_engine(text, dna)
     if not passes_quality_check(text, dna):
-        text = llm_rewrite(text, dna)
+        text = llm_rewrite(text, dna, req.style)
 
     with closing(get_db()) as conn:
         used_today = increment_usage(conn, user["id"])
@@ -382,6 +419,27 @@ def humanize(req: HumanizeRequest, user: sqlite3.Row = Depends(get_current_user)
         used_today=used_today,
         daily_limit=limit,
     )
+
+
+@app.post("/reviews", response_model=ReviewOut)
+def create_review(req: ReviewCreate):
+    created_at = datetime.now(timezone.utc).isoformat()
+    with closing(get_db()) as conn:
+        conn.execute(
+            "INSERT INTO reviews (name, rating, comment, created_at) VALUES (?, ?, ?, ?)",
+            (req.name.strip(), req.rating, req.comment.strip(), created_at),
+        )
+        conn.commit()
+    return ReviewOut(name=req.name.strip(), rating=req.rating, comment=req.comment.strip(), created_at=created_at)
+
+
+@app.get("/reviews", response_model=list[ReviewOut])
+def list_reviews():
+    with closing(get_db()) as conn:
+        rows = conn.execute(
+            "SELECT name, rating, comment, created_at FROM reviews ORDER BY id DESC LIMIT 50"
+        ).fetchall()
+    return [ReviewOut(**dict(row)) for row in rows]
 
 
 @app.get("/")
