@@ -1,8 +1,0 @@
-fastapi
-uvicorn[standard]
-openai
-pydantic[email]
-PyJWT
-bcrypt
-gspread
-google-auth
