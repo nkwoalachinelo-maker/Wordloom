@@ -1,0 +1,19 @@
+# Stock words and phrases the stiffness gate flags (one per line, # = comment).
+# A sentence containing one scores higher and is more likely to be rewritten.
+# Edit this file freely; no code changes needed.
+delve
+crucial
+moreover
+furthermore
+tapestry
+leverage
+utilize
+embark
+comprehensive
+holistic
+nuanced
+multifaceted
+underscore
+in conclusion
+realm
+landscape
