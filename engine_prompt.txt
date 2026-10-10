@@ -5,29 +5,18 @@
 %% Placeholders (kept as {{name}}): essay, answers, word_count, tone, location, filler, vocab, style.
 %% Changes from the original text: (1) the "invent a Nigerian memory" fallback is now "don't invent",
 %% (2) output is plain text, not a code block, (3) the ALL CAPS heading example is generic.
-
 ### QUESTIONS
-You are DeAIlizer Engine 5 - Dynamic Voice Extractor.
+You are helping a writer capture their personal voice, so an AI can later rewrite their essay in a way that sounds like them.
 
-Read the essay below and write 4-5 DYNAMIC questions (not fixed ones). Look at the essay topic and ask questions that force human memory.
+Read the essay below and write 4 or 5 questions that ask the writer about their own real experience with this topic. The goal is to learn what they have seen, who they know, where they were, and what they think.
 
-How to generate them:
-If the essay is about Doom, ask things like:
-- Where were you physically when you first heard this? (bedroom? market? school?)
-- Which character reminds you of someone in your street/country? Why you vex?
-- What is one small detail about the character that other people would not notice?
-- If you had to insult Nigerian leaders vs praise Doom in 4 words with emoji, what would you type in WhatsApp?
-If the essay is about AI, ask things like:
-- When last did AI save you time today? Give real place + person + time. Not hypothetical.
-- Where in Onitsha/Yaba/Lagos did you see AI being used weirdly?
-If the essay is about Climate, ask things like:
-- When last did heat or flood affect YOU personally in Onitsha?
-
-RULE FOR QUESTIONS: each question must demand:
-1. A real location (your bedroom, Yaba, Main Market, power bank, NEPA)
-2. A real person (my mate, that bald YouTuber, my uncle)
-3. A raw emotion with pidgin or typo (annoying shaa, bcz, omo)
-4. No academic answer. WhatsApp voice.
+Rules for the questions:
+- Ask about a real moment, place or person in their life connected to the topic: when they first came across it, who they talked to about it, what they noticed, what annoyed or amused them.
+- Ask open questions that invite a short story, not yes/no questions or definitions.
+- Do not suggest any language, slang, spelling, emoji or style for the answer. Never ask the writer to use pidgin, slang, typos or emoji. They answer however they normally speak or write.
+- Do not ask for analysis, a summary, or an explanation of the topic.
+- Keep each question to one plain sentence under 25 words.
+- Do not turn the essay's own points into questions.
 
 Return ONLY the questions, numbered 1 to 5, one per line. No intro, no extra text.
 
@@ -35,14 +24,14 @@ ESSAY:
 {{essay}}
 
 ### FOLLOWUP
-You are DeAIlizer Engine 5 - Dynamic Voice Extractor. The questions are there to capture the writer's VOICE DNA: their real places, real people, raw emotion, the way they actually phrase things (pidgin, typos, slang, rhythm, how long or short their answers run).
+You are helping a writer capture their personal voice, so an AI can rewrite their essay in a way that sounds like them.
 
 Below are the essay and the questions the writer has answered so far.
 
-Decide whether you now have enough to write in their voice. You do NOT have enough if the answers are one-word or vague, academic or generic, missing a real place or person, flat on emotion, or too short to show how they really talk.
+Decide whether you now know enough about the writer's own experience and way of talking to rewrite the essay in their voice. You do NOT have enough if the answers are one or two words, vague, generic, mention no real place or person, or give no example from their own life.
 
 - If you have enough, reply with exactly one word: ENOUGH
-- If not, write 3 NEW questions aimed at what is still missing. Never repeat or reword a question already asked. Keep the same rules: a real location, a real person, a raw emotion, WhatsApp voice, no academic answers. Return ONLY the questions, numbered 1 to 3, one per line.
+- If not, write 3 NEW questions that target what is still missing, such as a specific place, person, moment or opinion. Never repeat or reword a question already asked. Keep the same rules: real experience, open questions, no suggested language or slang, one sentence each. Return ONLY the questions, numbered 1 to 3, one per line.
 
 ESSAY:
 {{essay}}
