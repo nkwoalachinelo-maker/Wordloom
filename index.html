@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DeAilize: AI should make you think better, not think for you</title>
+<meta name="description" content="DeAilize is built on one idea: AI should sharpen human thinking, not replace it. You bring the thinking. It helps you say it better.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --night:#0D0A2E; --night-2:#15104A; --violet:#5B3BF0; --violet-2:#7C5CFF; --blue:#2457E8; --sky:#5E8BFF;
+  --glow:#B3A6FF; --lav:#F4F2FF; --lav-2:#E3DEFF; --ink:#15113D; --muted:#5B5788;
+  --on-dark:#EEEBFF; --on-dark-2:#BDB7EC;
+  --serif:"Fraunces",Georgia,"Times New Roman",serif;
+  --sans:"Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --grad:linear-gradient(110deg,var(--violet) 0%,var(--blue) 100%);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{margin:0;background:var(--lav);color:var(--ink);font:17px/1.6 var(--sans)}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--sky);outline-offset:3px;border-radius:4px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 22px}
+
+/* ---------- hero ---------- */
+.hero{position:relative;overflow:hidden;color:var(--on-dark);
+  background:
+    radial-gradient(900px 520px at 84% 8%,rgba(124,92,255,.62),transparent 62%),
+    radial-gradient(760px 520px at 6% 96%,rgba(36,87,232,.55),transparent 62%),
+    radial-gradient(520px 360px at 55% 55%,rgba(94,139,255,.18),transparent 70%),
+    var(--night)}
+.hero::after{content:"";position:absolute;inset:0;background:
+  repeating-linear-gradient(0deg,rgba(255,255,255,.025) 0 1px,transparent 1px 44px);pointer-events:none;
+  mask-image:linear-gradient(180deg,#000,transparent 85%);-webkit-mask-image:linear-gradient(180deg,#000,transparent 85%)}
+.bar{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:22px 0}
+.logo{font:600 24px/1 var(--serif);letter-spacing:-.01em;color:#fff;text-decoration:none}
+.nav{display:flex;gap:22px;flex-wrap:wrap;font-size:15px}
+.nav a{color:var(--on-dark-2);text-decoration:none}
+.nav a:hover{color:#fff;text-decoration:underline}
+.hero-grid{position:relative;z-index:2;display:grid;grid-template-columns:1.3fr .7fr;gap:44px;align-items:center;padding:56px 0 96px}
+@media (max-width:900px){.hero-grid{grid-template-columns:1fr;gap:40px;padding:36px 0 72px}}
+h1{font:500 clamp(38px,6vw,68px)/1.04 var(--serif);letter-spacing:-.025em;margin:0 0 24px}
+h1 span{display:block}
+h1 .dim{color:var(--glow);opacity:.8}
+.lede{font-size:20px;line-height:1.6;color:var(--on-dark-2);max-width:46ch;margin:0 0 32px}
+.cta{display:flex;gap:14px;flex-wrap:wrap}
+.btn{display:inline-block;font:600 16px/1 var(--sans);padding:15px 24px;border-radius:999px;text-decoration:none;border:1px solid transparent;cursor:pointer}
+.btn.primary{background:#fff;color:var(--ink);box-shadow:0 10px 30px rgba(94,139,255,.35)}
+.btn.primary:hover{background:var(--lav-2)}
+.btn.ghost{color:#fff;border-color:rgba(255,255,255,.35)}
+.btn.ghost:hover{border-color:#fff;background:rgba(255,255,255,.08)}
+.btn.grad{background:var(--grad);color:#fff;box-shadow:0 12px 32px rgba(91,59,240,.35)}
+.btn.grad:hover{filter:brightness(1.08)}
+
+/* hero draft panel */
+.glass{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.18);border-radius:20px;padding:26px 26px 20px;
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 30px 80px rgba(8,5,40,.55)}
+.glass p{font:400 21px/1.75 var(--serif);margin:0 0 14px;color:var(--on-dark-2)}
+.glass .keep{color:var(--on-dark)}
+.glass .mark{-webkit-box-decoration-break:clone;box-decoration-break:clone;color:#fff;background:linear-gradient(110deg,rgba(124,92,255,.55),rgba(36,87,232,.55));padding:2px 6px;border-radius:6px;box-shadow:0 0 0 1px rgba(179,166,255,.55),0 0 24px rgba(124,92,255,.55)}
+.glass .cap{font:14px/1.5 var(--sans);color:var(--on-dark-2);margin:0;border-top:1px solid rgba(255,255,255,.14);padding-top:12px}
+
+/* ---------- sections ---------- */
+section{padding:88px 0}
+h2{font:500 clamp(30px,4.6vw,48px)/1.1 var(--serif);letter-spacing:-.02em;margin:0 0 18px;max-width:20ch}
+.kicker{color:var(--muted);font-size:19px;max-width:56ch;margin:0 0 40px}
+
+/* replace vs sharpen */
+.compare{background:#fff;border-radius:24px;border:1px solid var(--lav-2);box-shadow:0 24px 60px rgba(91,59,240,.10);overflow:hidden}
+.switch{display:flex;gap:6px;padding:8px;background:var(--lav);border-bottom:1px solid var(--lav-2)}
+.switch button{flex:1;font:600 15px var(--sans);padding:14px 10px;border:0;border-radius:14px;background:transparent;color:var(--muted);cursor:pointer}
+.switch button[aria-pressed=true]{background:var(--grad);color:#fff;box-shadow:0 8px 20px rgba(91,59,240,.3)}
+.cmp-body{display:grid;grid-template-columns:1fr 1fr}
+@media (max-width:760px){.cmp-body{grid-template-columns:1fr}}
+.cmp-col{padding:28px}
+.cmp-col+.cmp-col{border-left:1px solid var(--lav-2)}
+@media (max-width:760px){.cmp-col+.cmp-col{border-left:0;border-top:1px solid var(--lav-2)}}
+.cmp-col h3{font:600 14px var(--sans);color:var(--muted);margin:0 0 12px}
+.cmp-col p{font:400 20px/1.7 var(--serif);margin:0 0 14px}
+.cmp-col .note{font:15px/1.5 var(--sans);color:var(--muted);margin:0}
+.stiff{background:#EDE7FF;box-shadow:0 2px 0 var(--violet-2)}
+.fresh{background:linear-gradient(110deg,#DCD5FF,#D3E1FF);box-shadow:0 2px 0 var(--blue)}
+.cmp-out{transition:opacity .25s}
+.cmp-out.swap{opacity:0}
+
+/* beliefs */
+.beliefs{display:grid;grid-template-columns:.8fr 1.2fr;gap:56px}
+@media (max-width:860px){.beliefs{grid-template-columns:1fr;gap:28px}}
+.sticky{position:sticky;top:28px;align-self:start}
+@media (max-width:860px){.sticky{position:static}}
+.bl{border-top:1px solid var(--lav-2);padding:26px 0 26px 0;display:grid;grid-template-columns:44px 1fr;gap:14px}
+.bl:last-child{border-bottom:1px solid var(--lav-2)}
+.bl i{width:30px;height:30px;border-radius:50%;background:var(--grad);display:block;margin-top:6px;box-shadow:0 6px 16px rgba(91,59,240,.35)}
+.bl h3{font:500 28px/1.2 var(--serif);margin:0 0 6px;letter-spacing:-.01em}
+.bl p{margin:0;color:var(--muted);max-width:54ch}
+
+/* flow */
+.flowband{background:var(--night);color:var(--on-dark);position:relative;overflow:hidden}
+.flowband::before{content:"";position:absolute;inset:0;background:
+  radial-gradient(700px 400px at 90% 0%,rgba(124,92,255,.45),transparent 60%),
+  radial-gradient(600px 400px at 0% 100%,rgba(36,87,232,.4),transparent 60%)}
+.flowband .wrap{position:relative}
+.flowband h2{color:#fff}
+.flowband .kicker{color:var(--on-dark-2)}
+.flow{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:26px;position:relative}
+@media (max-width:860px){.flow{grid-template-columns:1fr 1fr}}
+@media (max-width:520px){.flow{grid-template-columns:1fr}}
+.flow li{border-top:2px solid transparent;border-image:linear-gradient(90deg,var(--violet-2),var(--sky)) 1;padding-top:16px}
+.flow b{display:block;font:500 24px/1.2 var(--serif);margin-bottom:6px}
+.flow span{color:var(--on-dark-2);font-size:16px}
+
+/* closing */
+.close{text-align:left}
+.band{background:var(--grad);border-radius:28px;padding:56px 44px;color:#fff;position:relative;overflow:hidden;
+  box-shadow:0 30px 70px rgba(36,87,232,.35)}
+.band::after{content:"";position:absolute;right:-80px;top:-80px;width:340px;height:340px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,.28),transparent 65%)}
+.band h2{color:#fff;max-width:18ch;position:relative;z-index:1}
+.band p{color:#E6E2FF;max-width:48ch;margin:0 0 28px;position:relative;z-index:1}
+.band .btn{position:relative;z-index:1}
+@media (max-width:600px){.band{padding:40px 26px}}
+
+footer{padding:34px 0 54px;color:var(--muted);font-size:14px}
+footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+footer nav{display:flex;gap:18px;flex-wrap:wrap}
+footer a{color:var(--muted)}
+
+.trial{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;background:var(--lav);border-radius:12px;padding:12px 14px;margin-bottom:14px;font-size:15px}.trial a{font-weight:600;color:var(--violet)}
+.qhead{margin:18px 0 12px}.qhead b{display:block;font:500 22px var(--serif)}.qhead span{display:block;color:var(--muted);font-size:15px;margin-top:4px}
+.qbar{height:4px;background:var(--lav-2);border-radius:4px;margin-top:12px;overflow:hidden}.qbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--violet),#00B894);transition:width .3s}
+.qc{display:flex;gap:14px;background:var(--lav);border:1px solid var(--lav-2);border-radius:16px;padding:16px;margin-bottom:12px;transition:border-color .2s,box-shadow .2s}
+.qc:focus-within{border-color:var(--violet);box-shadow:0 0 0 3px rgba(91,59,240,.15)}.qc.done{border-color:#00B894}
+.qn{flex:none;width:30px;height:30px;border-radius:50%;background:var(--violet);color:#fff;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center}.qc.done .qn{background:#00B894}
+.qm{flex:1;min-width:0}.qm label{display:block;font-weight:600;line-height:1.45;margin-bottom:10px}
+.qm textarea{min-height:48px!important;background:#fff!important;resize:none!important;margin:0!important;overflow:hidden}
+.card{background:#fff;border:1px solid var(--lav-2);border-radius:24px;padding:28px;box-shadow:0 24px 60px rgba(91,59,240,.10)}
+.card input,.card textarea{width:100%;font:16px var(--sans);padding:13px 14px;border:1px solid var(--lav-2);border-radius:12px;background:var(--lav);color:var(--ink);margin:0 0 12px}
+.card textarea{min-height:150px;resize:vertical;line-height:1.5}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.msg{font-size:15px;color:var(--muted);margin:10px 0 0;min-height:1.3em}.msg.err{color:#C0264B}
+.out{white-space:pre-wrap;font:19px/1.7 var(--serif);background:var(--lav);border-radius:14px;padding:18px;margin:16px 0 0}
+.card .btn{border:0}.card .btn.line{background:transparent;border:1px solid var(--lav-2);color:var(--ink)}
+.plans{display:grid;grid-template-columns:1fr 1fr;gap:22px;max-width:760px}
+@media (max-width:700px){.plans{grid-template-columns:1fr}}
+.plan.pro{border:2px solid var(--violet)}
+.plan h3{font:500 28px var(--serif);margin:0}.plan .price{font:500 44px var(--serif);margin:6px 0 14px}.plan .price small{font:15px var(--sans);color:var(--muted)}
+.plan ul{padding-left:20px;margin:0 0 22px;color:var(--muted)}.plan li{margin:6px 0}
+[hidden]{display:none!important}
+</style>
+</head>
+<body id="top">
+
+<header class="hero">
+  <div class="wrap">
+    <div class="bar">
+      <a class="logo" href="#top">DeAilize</a>
+      <nav class="nav" aria-label="Main">
+        <a href="#difference">Why</a>
+        <a href="#tool">Try it free</a>
+        <a href="#pricing">Pricing</a>
+      </nav>
+    </div>
+    <div class="hero-grid" style="display:block;padding:20px 0 104px">
+      <h1><span>Paste your draft.</span><span class="dim">Make it sound like you.</span></h1>
+      <p class="lede">Answer a few quick questions and get a rewrite in your own voice. Free: 3 rewrites a day, no card.</p>
+    </div>
+  </div>
+</header>
+
+<section id="tool" style="padding:0 0 40px;margin-top:-72px;position:relative;z-index:3">
+  <div class="wrap">
+    <div class="trial" id="paidNote" hidden style="max-width:760px">Thanks for your payment! Log in or create an account with the email you paid with. As soon as Pro is switched on for it, you'll be taken to the Pro site.</div>
+    <div class="card" style="max-width:760px">
+      <div id="outView">
+        <p class="msg" style="margin:0 0 14px">Log in or create a free account to start. No card needed.</p>
+        <input id="em" type="email" placeholder="Email" autocomplete="email">
+        <input id="pw" type="password" placeholder="Password (8+ characters)" autocomplete="current-password">
+        <div class="row"><button class="btn grad" id="bLogin">Log in</button><button class="btn line" id="bSignup">Create free account</button></div>
+        <p class="msg" id="authMsg" aria-live="polite"></p>
+      </div>
+      <div id="inView" hidden>
+        <div class="row" style="justify-content:space-between;margin-bottom:14px">
+          <span class="msg" id="who" style="margin:0"></span>
+          <span class="row"><a class="btn grad" id="bPro" href="#" hidden>Open the Pro site</a><button class="btn line" id="bOut">Log out</button></span>
+        </div>
+        <div class="trial"><span id="left"></span><a id="up" href="https://selar.com/2t9917v947" target="_blank" rel="noopener">Upgrade to Pro, $9/month</a></div>
+        <textarea id="inp" maxlength="2000" placeholder="Paste a paragraph you wrote (up to 2000 characters)"></textarea>
+        <div class="row"><button class="btn grad" id="go">Rewrite</button><button class="btn line" id="copy" hidden>Copy</button></div>
+        <p class="msg" id="toolMsg" aria-live="polite"></p>
+        <div id="qs" hidden></div>
+        <div class="out" id="out" hidden></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero" id="why-top" style="padding:0"><div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <h1><span>AI should make you</span><span>think better,</span><span class="dim">not think for you.</span></h1>
+        <p class="lede">Most AI tools write the thing and hand it back. DeAilize starts with your thinking, points at what reads stiff, and helps you say it better. The words stay yours.</p>
+        <div class="cta">
+          <a class="btn primary" href="#tool">Try DeAilize free</a>
+          <a class="btn ghost" href="#pricing">Go Pro, $9/month</a>
+        </div>
+      </div>
+      <div class="glass" aria-label="Example of a draft being sharpened">
+        <p class="keep">The shop opens at six.</p>
+        <p><span class="mark">We need to talk about how we treat customers.</span></p>
+        <p class="keep">Most mornings the line is out the door.</p>
+        <p class="cap">One stiff sentence sharpened. The two that were already yours are left alone.</p>
+      </div>
+    </div>
+</div></section>
+
+<main>
+<section id="difference">
+  <div class="wrap">
+    <h2>When AI does the thinking, something quiet goes missing.</h2>
+    <p class="kicker">Writing is how most of us find out what we believe. Hand the first draft to a machine and you skip the part where your ideas get sharper. What comes back reads fine and belongs to nobody.</p>
+
+    <div class="compare">
+      <div class="switch" role="group" aria-label="Compare two approaches">
+        <button type="button" id="bRep" aria-pressed="false">AI replaces you</button>
+        <button type="button" id="bSharp" aria-pressed="true">AI sharpens you</button>
+      </div>
+      <div class="cmp-body">
+        <div class="cmp-col">
+          <h3>Your draft</h3>
+          <p>The shop opens at six. <span class="stiff">Moreover, it is crucial to delve into customer engagement.</span> Most mornings the line is out the door.</p>
+          <p class="note">Two good sentences and one that sounds like a brochure.</p>
+        </div>
+        <div class="cmp-col">
+          <h3 id="outTitle">What you get back</h3>
+          <div class="cmp-out" id="cmpOut" aria-live="polite"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:8px">
+  <div class="wrap beliefs">
+    <div class="sticky">
+      <h2>Five beliefs behind every feature.</h2>
+      <p class="kicker" style="margin-bottom:0">They decide what DeAilize does, and what it refuses to do.</p>
+    </div>
+    <div>
+      <div class="bl"><i aria-hidden="true"></i><div><h3>You think first.</h3><p>You paste your draft and a few sentences you wrote yourself. The tool starts from your words, never a blank page.</p></div></div>
+      <div class="bl"><i aria-hidden="true"></i><div><h3>Your voice is the point.</h3><p>A good rewrite sounds more like you, not more like everyone. That's why it asks for a sample of your own writing.</p></div></div>
+      <div class="bl"><i aria-hidden="true"></i><div><h3>AI points, you decide.</h3><p>It marks the sentences that read stiff and leaves the natural ones, the headings and the lists alone. Edit anything in the result before you copy it.</p></div></div>
+      <div class="bl"><i aria-hidden="true"></i><div><h3>No borrowed lives.</h3><p>If you give it a real moment, it works that in using only your details. It never passes off an invented story as your experience.</p></div></div>
+      <div class="bl"><i aria-hidden="true"></i><div><h3>Honest about limits.</h3><p>We can't promise what any AI detector will say, and we won't pretend to. Use DeAilize only where AI help is allowed.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="flowband">
+  <div class="wrap">
+    <h2>You stay in the driver's seat.</h2>
+    <p class="kicker">Four moves, and you hold the pen for every one that matters.</p>
+    <ol class="flow">
+      <li><b>You write</b><span>The idea, the draft and a few lines in your own voice.</span></li>
+      <li><b>It reads</b><span>Code scores each sentence for stiffness, with no AI involved yet.</span></li>
+      <li><b>It rewrites only the stiff ones</b><span>Everything natural stays exactly as you wrote it.</span></li>
+      <li><b>You finish it</b><span>Anything still stiff is marked. Edit it on the page, then copy.</span></li>
+    </ol>
+  </div>
+</section>
+
+<section id="pricing">
+  <div class="wrap">
+    <h2>Free, or Pro for $9 a month.</h2>
+    <p class="kicker">Stay on free as long as you like. Go Pro when you want the full site.</p>
+    <div class="plans">
+      <div class="card plan"><h3>Free</h3><div class="price">$0</div>
+        <ul><li>3 rewrites a day</li><li>Log in on this page</li><li>Runs on our hosted model</li></ul>
+        <a class="btn line" style="border:1px solid var(--lav-2)" href="#tool">Try it free</a></div>
+      <div class="card plan pro"><h3>Pro</h3><div class="price">$9<small> / month</small></div>
+        <ul><li>The full DeAilize site</li><li>Voice matching from your own samples</li><li>Stiff sentences marked for you to edit</li><li>Up to 200 rewrites a day</li></ul>
+        <a class="btn grad" href="https://selar.com/2t9917v947" target="_blank" rel="noopener">Get Pro, $9/month</a>
+        <p class="msg">After you pay, tap “Continue to Pro” on Selar's confirmation. Log in or sign up with the email you paid with and you'll be taken to the Pro site. <a href="#tool" id="chk">Check my access</a></p></div>
+    </div>
+  </div>
+</section>
+
+<section class="close">
+  <div class="wrap">
+    <div class="band">
+      <h2>Better thinking. Better writing. Still yours.</h2>
+      <p>Bring a draft and a few lines of your own. The free plan gives you 3 rewrites a day.</p>
+      <a class="btn primary" href="#tool">Bring your own thinking</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>DeAilize helps you sharpen your own writing. Use it only where AI help is allowed.</div>
+    <nav aria-label="Footer">
+      <a href="#top">Home</a>
+      <a href="mailto:nkwoalaayomide@gmail.com">Contact</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var out = document.getElementById("cmpOut"), title = document.getElementById("outTitle");
+  var bRep = document.getElementById("bRep"), bSharp = document.getElementById("bSharp");
+  var VIEWS = {
+    rep: {
+      title: "AI replaces you",
+      html: '<p>Our establishment commences operations at dawn, fostering robust engagement with a loyal community of patrons.</p>' +
+            '<p class="note">Smooth, generic, and none of it is yours. The shop, the six o\'clock start and the line out the door are gone.</p>'
+    },
+    sharp: {
+      title: "AI sharpens you",
+      html: '<p>The shop opens at six. <span class="fresh">We need to talk about how we treat customers.</span> Most mornings the line is out the door.</p>' +
+            '<p class="note">One stiff sentence rewritten in your voice. The rest is exactly what you wrote.</p>'
+    }
+  };
+  function show(key) {
+    out.classList.add("swap");
+    setTimeout(function () {
+      title.textContent = VIEWS[key].title;
+      out.innerHTML = VIEWS[key].html;
+      out.classList.remove("swap");
+    }, 180);
+    bRep.setAttribute("aria-pressed", key === "rep");
+    bSharp.setAttribute("aria-pressed", key === "sharp");
+  }
+  bRep.addEventListener("click", function () { show("rep"); });
+  bSharp.addEventListener("click", function () { show("sharp"); });
+  title.textContent = VIEWS.sharp.title; out.innerHTML = VIEWS.sharp.html;
+})();
+</script>
+<script type="module">
+const API="https://wordloom-anw1.onrender.com";
+const PRO_SITE_URL="app.html"; // same folder/site as this page
+const GRADIO_CLIENT="https://cdn.jsdelivr.net/npm/@gradio/client/dist/index.min.js";
+const SPACE="nkwoalaayomide/001";
+const $=id=>document.getElementById(id);
+let token=null,app=null,polls=0,polling=false;const paid=location.search.includes("paid=1");
+try{token=localStorage.getItem("dz_token")}catch(e){}
+const say=(id,t,err)=>{$(id).textContent=t;$(id).classList.toggle("err",!!err)};
+async function api(path,opts={}){
+  const r=await fetch(API+path,{...opts,headers:{"Content-Type":"application/json",...(token?{Authorization:"Bearer "+token}:{}),...(opts.headers||{})}});
+  const d=await r.json().catch(()=>({}));
+  if(!r.ok){const e=new Error(typeof d.detail==="string"?d.detail:"Something went wrong.");e.status=r.status;throw e}
+  return d;
+}
+function show(me){
+  const on=!!me;$("outView").hidden=on;$("inView").hidden=!on;if(!on)return;
+  $("who").textContent=me.email+" · "+me.plan+(me.plan==="free"?" · "+me.used_today+"/"+me.daily_limit+" today":"");
+  $("bPro").hidden=me.plan!=="pro";$("up").hidden=me.plan==="pro";$("left").textContent=me.plan==="pro"?"Pro active":(me.daily_limit-me.used_today)+" of "+me.daily_limit+" free rewrites left today";$("bPro").href=PRO_SITE_URL+"#t="+encodeURIComponent(token);
+}
+async function refresh(){
+  if(!token)return show(null);
+  try{
+    const me=await api("/me");
+    if(me.plan==="pro"&&!PRO_SITE_URL.includes("YOUR-PRO")&&!location.search.includes("stay")){
+      show(null);say("authMsg","Pro active. Taking you to the Pro site…");
+      location.href=PRO_SITE_URL+"#t="+encodeURIComponent(token);return;
+    }
+    show(me);
+    if(paid&&me.plan==="free"&&polls<24&&!polling){polling=true;say("toolMsg","Waiting for your payment to confirm…");setTimeout(()=>{polling=false;polls++;refresh()},5000)}
+  }catch(e){
+    if(e.status===401){token=null;try{localStorage.removeItem("dz_token")}catch(_){}}
+    show(null);say("authMsg",e.status===401?"":"Couldn't load your account ("+(e.message||"network error")+"). Try again in a moment.",true);
+  }
+}
+async function auth(path){
+  say("authMsg","One moment (the server may be waking up)…");
+  try{
+    const d=await api(path,{method:"POST",body:JSON.stringify({email:$("em").value.trim(),password:$("pw").value})});
+    token=d.token;try{localStorage.setItem("dz_token",token)}catch(e){}
+    say("authMsg","");await refresh();$("tool").scrollIntoView({behavior:"smooth"});
+  }catch(e){say("authMsg",e.message,true)}
+}
+$("bLogin").onclick=()=>auth("/login");$("bSignup").onclick=()=>auth("/signup");
+$("bOut").onclick=()=>{token=null;try{localStorage.removeItem("dz_token")}catch(e){}show(null)};
+$("chk").onclick=refresh;
+const ECHO=/(WRITER'S OWN ANSWERS|inject these VERBATIM|ENGINE \d|BAN LIST|WRITER PROFILE|REWRITE USING|Personal details from the writer|Text to rewrite|Rewritten text:|^\s*(OUTPUT|ESSAY|STYLE)\s*:)/i;
+const PRE=/^\s*(here is|here's|sure|certainly|okay|below is)\b.*(rewrit|essay|text)/i;
+function clean(t){
+  const o=t.split("\n").filter(l=>!l.trim().startsWith("```")&&!ECHO.test(l)&&!PRE.test(l)).join("\n").trim();
+  return(o.length<20||/^\s*(i'm sorry|i am sorry|sorry, but|i can't|i cannot|as an ai)/i.test(o))?"":o;
+}
+const esc=t=>t.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+$("go").onclick=async()=>{
+  const text=$("inp").value.trim();if(!text)return say("toolMsg","Paste some text first.",true);
+  $("go").disabled=true;$("out").hidden=true;$("copy").hidden=true;$("qs").hidden=true;
+  say("toolMsg","Reading your text and writing your questions…");
+  try{
+    const d=await api("/engine/questions",{method:"POST",body:JSON.stringify({essay:text})});
+    if(!d.questions||!d.questions.length)return rewrite(text,"");
+    showQuestions(text,d.questions);
+  }catch(e){say("toolMsg",e.message||"Couldn't reach the server.",true);if(e.status===401)refresh();}
+  $("go").disabled=false;
+};
+function showQuestions(text,qs){
+  const box=$("qs");say("toolMsg","");box.hidden=false;
+  box.innerHTML='<div class="qhead"><b>Step 1 of 2: make it sound like you</b><span>Answer a few in your own words. Typos and pidgin are welcome, they go in word for word.</span><div class="qbar"><i id="qfill"></i></div></div>'+
+   qs.map((q,i)=>'<div class="qc"><div class="qn">'+(i+1)+'</div><div class="qm"><label for="qq'+i+'">'+esc(q)+'</label><textarea id="qq'+i+'" rows="2" placeholder="Type it like you\'d send it on WhatsApp…"></textarea></div></div>').join('')+
+   '<div class="row"><button class="btn grad" id="qgo" disabled>Answer at least one</button><button class="btn line" id="qskip">Skip questions</button></div>';
+  const tas=[...box.querySelectorAll("textarea")];
+  tas.forEach(t=>t.addEventListener("input",()=>{
+    t.style.height="auto";t.style.height=t.scrollHeight+"px";t.closest(".qc").classList.toggle("done",!!t.value.trim());
+    const n=tas.filter(x=>x.value.trim()).length;$("qfill").style.width=(n/tas.length*100)+"%";
+    $("qgo").disabled=!n;$("qgo").textContent=n?"Rewrite with "+n+" answer"+(n>1?"s":"")+" →":"Answer at least one";
+  }));
+  $("qgo").onclick=()=>rewrite(text,qs.map((q,i)=>tas[i].value.trim()?"Q: "+q+"\nA: "+tas[i].value.trim():"").filter(Boolean).join("\n\n"));
+  $("qskip").onclick=()=>rewrite(text,"");
+  box.scrollIntoView({behavior:"smooth",block:"nearest"});tas[0].focus();
+}
+async function rewrite(text,answers){
+  $("qs").hidden=true;$("go").disabled=true;say("toolMsg","Writing your rewrite…");
+  try{
+    if(!app){const {Client}=await import(GRADIO_CLIENT);app=await Client.connect(SPACE)}
+    const r=await app.predict("/chat",{essay:text,answers});
+    const txt=clean(String(r.data[0]||""));
+    if(!txt)say("toolMsg","That one didn't come out right. Please try again.",true);
+    else{$("out").textContent=txt;$("out").hidden=false;$("copy").hidden=false;say("toolMsg","");}
+  }catch(e){say("toolMsg",e.status?e.message:"Busy or quota reached, try again later.",true);if(e.status===401)refresh();}
+  $("go").disabled=false;refresh();
+}
+$("copy").onclick=()=>navigator.clipboard.writeText($("out").textContent).then(()=>say("toolMsg","Copied."));
+if(paid){$("paidNote").hidden=false;$("tool").scrollIntoView()}
+refresh();
+</script>
+</body>
+</html>

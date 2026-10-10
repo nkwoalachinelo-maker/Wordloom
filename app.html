@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DeAilize Pro</title>
+<meta name="description" content="DeAilize is built on one idea: AI should sharpen human thinking, not replace it. You bring the thinking. It helps you say it better.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --night:#0D0A2E; --night-2:#15104A; --violet:#5B3BF0; --violet-2:#7C5CFF; --blue:#2457E8; --sky:#5E8BFF;
+  --glow:#B3A6FF; --lav:#F4F2FF; --lav-2:#E3DEFF; --ink:#15113D; --muted:#5B5788;
+  --on-dark:#EEEBFF; --on-dark-2:#BDB7EC;
+  --serif:"Fraunces",Georgia,"Times New Roman",serif;
+  --sans:"Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --grad:linear-gradient(110deg,var(--violet) 0%,var(--blue) 100%);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{margin:0;background:var(--lav);color:var(--ink);font:17px/1.6 var(--sans)}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--sky);outline-offset:3px;border-radius:4px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 22px}
+
+/* ---------- hero ---------- */
+.hero{position:relative;overflow:hidden;color:var(--on-dark);
+  background:
+    radial-gradient(900px 520px at 84% 8%,rgba(124,92,255,.62),transparent 62%),
+    radial-gradient(760px 520px at 6% 96%,rgba(36,87,232,.55),transparent 62%),
+    radial-gradient(520px 360px at 55% 55%,rgba(94,139,255,.18),transparent 70%),
+    var(--night)}
+.hero::after{content:"";position:absolute;inset:0;background:
+  repeating-linear-gradient(0deg,rgba(255,255,255,.025) 0 1px,transparent 1px 44px);pointer-events:none;
+  mask-image:linear-gradient(180deg,#000,transparent 85%);-webkit-mask-image:linear-gradient(180deg,#000,transparent 85%)}
+.bar{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:22px 0}
+.logo{font:600 24px/1 var(--serif);letter-spacing:-.01em;color:#fff;text-decoration:none}
+.nav{display:flex;gap:22px;flex-wrap:wrap;font-size:15px}
+.nav a{color:var(--on-dark-2);text-decoration:none}
+.nav a:hover{color:#fff;text-decoration:underline}
+.hero-grid{position:relative;z-index:2;display:grid;grid-template-columns:1.3fr .7fr;gap:44px;align-items:center;padding:56px 0 96px}
+@media (max-width:900px){.hero-grid{grid-template-columns:1fr;gap:40px;padding:36px 0 72px}}
+h1{font:500 clamp(38px,6vw,68px)/1.04 var(--serif);letter-spacing:-.025em;margin:0 0 24px}
+h1 span{display:block}
+h1 .dim{color:var(--glow);opacity:.8}
+.lede{font-size:20px;line-height:1.6;color:var(--on-dark-2);max-width:46ch;margin:0 0 32px}
+.cta{display:flex;gap:14px;flex-wrap:wrap}
+.btn{display:inline-block;font:600 16px/1 var(--sans);padding:15px 24px;border-radius:999px;text-decoration:none;border:1px solid transparent;cursor:pointer}
+.btn.primary{background:#fff;color:var(--ink);box-shadow:0 10px 30px rgba(94,139,255,.35)}
+.btn.primary:hover{background:var(--lav-2)}
+.btn.ghost{color:#fff;border-color:rgba(255,255,255,.35)}
+.btn.ghost:hover{border-color:#fff;background:rgba(255,255,255,.08)}
+.btn.grad{background:var(--grad);color:#fff;box-shadow:0 12px 32px rgba(91,59,240,.35)}
+.btn.grad:hover{filter:brightness(1.08)}
+
+/* hero draft panel */
+.glass{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.18);border-radius:20px;padding:26px 26px 20px;
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 30px 80px rgba(8,5,40,.55)}
+.glass p{font:400 21px/1.75 var(--serif);margin:0 0 14px;color:var(--on-dark-2)}
+.glass .keep{color:var(--on-dark)}
+.glass .mark{-webkit-box-decoration-break:clone;box-decoration-break:clone;color:#fff;background:linear-gradient(110deg,rgba(124,92,255,.55),rgba(36,87,232,.55));padding:2px 6px;border-radius:6px;box-shadow:0 0 0 1px rgba(179,166,255,.55),0 0 24px rgba(124,92,255,.55)}
+.glass .cap{font:14px/1.5 var(--sans);color:var(--on-dark-2);margin:0;border-top:1px solid rgba(255,255,255,.14);padding-top:12px}
+
+/* ---------- sections ---------- */
+section{padding:88px 0}
+h2{font:500 clamp(30px,4.6vw,48px)/1.1 var(--serif);letter-spacing:-.02em;margin:0 0 18px;max-width:20ch}
+.kicker{color:var(--muted);font-size:19px;max-width:56ch;margin:0 0 40px}
+
+/* replace vs sharpen */
+.compare{background:#fff;border-radius:24px;border:1px solid var(--lav-2);box-shadow:0 24px 60px rgba(91,59,240,.10);overflow:hidden}
+.switch{display:flex;gap:6px;padding:8px;background:var(--lav);border-bottom:1px solid var(--lav-2)}
+.switch button{flex:1;font:600 15px var(--sans);padding:14px 10px;border:0;border-radius:14px;background:transparent;color:var(--muted);cursor:pointer}
+.switch button[aria-pressed=true]{background:var(--grad);color:#fff;box-shadow:0 8px 20px rgba(91,59,240,.3)}
+.cmp-body{display:grid;grid-template-columns:1fr 1fr}
+@media (max-width:760px){.cmp-body{grid-template-columns:1fr}}
+.cmp-col{padding:28px}
+.cmp-col+.cmp-col{border-left:1px solid var(--lav-2)}
+@media (max-width:760px){.cmp-col+.cmp-col{border-left:0;border-top:1px solid var(--lav-2)}}
+.cmp-col h3{font:600 14px var(--sans);color:var(--muted);margin:0 0 12px}
+.cmp-col p{font:400 20px/1.7 var(--serif);margin:0 0 14px}
+.cmp-col .note{font:15px/1.5 var(--sans);color:var(--muted);margin:0}
+.stiff{background:#EDE7FF;box-shadow:0 2px 0 var(--violet-2)}
+.fresh{background:linear-gradient(110deg,#DCD5FF,#D3E1FF);box-shadow:0 2px 0 var(--blue)}
+.cmp-out{transition:opacity .25s}
+.cmp-out.swap{opacity:0}
+
+/* beliefs */
+.beliefs{display:grid;grid-template-columns:.8fr 1.2fr;gap:56px}
+@media (max-width:860px){.beliefs{grid-template-columns:1fr;gap:28px}}
+.sticky{position:sticky;top:28px;align-self:start}
+@media (max-width:860px){.sticky{position:static}}
+.bl{border-top:1px solid var(--lav-2);padding:26px 0 26px 0;display:grid;grid-template-columns:44px 1fr;gap:14px}
+.bl:last-child{border-bottom:1px solid var(--lav-2)}
+.bl i{width:30px;height:30px;border-radius:50%;background:var(--grad);display:block;margin-top:6px;box-shadow:0 6px 16px rgba(91,59,240,.35)}
+.bl h3{font:500 28px/1.2 var(--serif);margin:0 0 6px;letter-spacing:-.01em}
+.bl p{margin:0;color:var(--muted);max-width:54ch}
+
+/* flow */
+.flowband{background:var(--night);color:var(--on-dark);position:relative;overflow:hidden}
+.flowband::before{content:"";position:absolute;inset:0;background:
+  radial-gradient(700px 400px at 90% 0%,rgba(124,92,255,.45),transparent 60%),
+  radial-gradient(600px 400px at 0% 100%,rgba(36,87,232,.4),transparent 60%)}
+.flowband .wrap{position:relative}
+.flowband h2{color:#fff}
+.flowband .kicker{color:var(--on-dark-2)}
+.flow{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:26px;position:relative}
+@media (max-width:860px){.flow{grid-template-columns:1fr 1fr}}
+@media (max-width:520px){.flow{grid-template-columns:1fr}}
+.flow li{border-top:2px solid transparent;border-image:linear-gradient(90deg,var(--violet-2),var(--sky)) 1;padding-top:16px}
+.flow b{display:block;font:500 24px/1.2 var(--serif);margin-bottom:6px}
+.flow span{color:var(--on-dark-2);font-size:16px}
+
+/* closing */
+.close{text-align:left}
+.band{background:var(--grad);border-radius:28px;padding:56px 44px;color:#fff;position:relative;overflow:hidden;
+  box-shadow:0 30px 70px rgba(36,87,232,.35)}
+.band::after{content:"";position:absolute;right:-80px;top:-80px;width:340px;height:340px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,.28),transparent 65%)}
+.band h2{color:#fff;max-width:18ch;position:relative;z-index:1}
+.band p{color:#E6E2FF;max-width:48ch;margin:0 0 28px;position:relative;z-index:1}
+.band .btn{position:relative;z-index:1}
+@media (max-width:600px){.band{padding:40px 26px}}
+
+footer{padding:34px 0 54px;color:var(--muted);font-size:14px}
+footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+footer nav{display:flex;gap:18px;flex-wrap:wrap}
+footer a{color:var(--muted)}
+
+.trial{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;background:var(--lav);border-radius:12px;padding:12px 14px;margin-bottom:14px;font-size:15px}.trial a{font-weight:600;color:var(--violet)}
+.qhead{margin:18px 0 12px}.qhead b{display:block;font:500 22px var(--serif)}.qhead span{display:block;color:var(--muted);font-size:15px;margin-top:4px}
+.qbar{height:4px;background:var(--lav-2);border-radius:4px;margin-top:12px;overflow:hidden}.qbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--violet),#00B894);transition:width .3s}
+.qc{display:flex;gap:14px;background:var(--lav);border:1px solid var(--lav-2);border-radius:16px;padding:16px;margin-bottom:12px;transition:border-color .2s,box-shadow .2s}
+.qc:focus-within{border-color:var(--violet);box-shadow:0 0 0 3px rgba(91,59,240,.15)}.qc.done{border-color:#00B894}
+.qn{flex:none;width:30px;height:30px;border-radius:50%;background:var(--violet);color:#fff;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center}.qc.done .qn{background:#00B894}
+.qm{flex:1;min-width:0}.qm label{display:block;font-weight:600;line-height:1.45;margin-bottom:10px}
+.qm textarea{min-height:48px!important;background:#fff!important;resize:none!important;margin:0!important;overflow:hidden}
+.card{background:#fff;border:1px solid var(--lav-2);border-radius:24px;padding:28px;box-shadow:0 24px 60px rgba(91,59,240,.10)}
+.card input,.card textarea{width:100%;font:16px var(--sans);padding:13px 14px;border:1px solid var(--lav-2);border-radius:12px;background:var(--lav);color:var(--ink);margin:0 0 12px}
+.card textarea{min-height:150px;resize:vertical;line-height:1.5}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.msg{font-size:15px;color:var(--muted);margin:10px 0 0;min-height:1.3em}.msg.err{color:#C0264B}
+.out{white-space:pre-wrap;font:19px/1.7 var(--serif);background:var(--lav);border-radius:14px;padding:18px;margin:16px 0 0}
+.card .btn{border:0}.card .btn.line{background:transparent;border:1px solid var(--lav-2);color:var(--ink)}
+.plans{display:grid;grid-template-columns:1fr 1fr;gap:22px;max-width:760px}
+@media (max-width:700px){.plans{grid-template-columns:1fr}}
+.plan.pro{border:2px solid var(--violet)}
+.plan h3{font:500 28px var(--serif);margin:0}.plan .price{font:500 44px var(--serif);margin:6px 0 14px}.plan .price small{font:15px var(--sans);color:var(--muted)}
+.plan ul{padding-left:20px;margin:0 0 22px;color:var(--muted)}.plan li{margin:6px 0}
+[hidden]{display:none!important}
+
+.tabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:14px;margin-bottom:18px;border-bottom:1px solid var(--lav-2);align-items:center}
+.tab{flex:none;border:1px solid var(--lav-2);background:var(--lav);color:var(--ink);border-radius:999px;padding:8px 14px;font:600 14px var(--sans);cursor:pointer}
+.tab.on{background:var(--violet);border-color:var(--violet);color:#fff}.tab.add{background:transparent;border-style:dashed;color:var(--violet)}
+.tab i{font-style:normal;margin-left:8px;opacity:.65}
+.chip{display:inline-flex;gap:8px;align-items:center;background:var(--lav);border:1px solid var(--lav-2);border-radius:999px;padding:6px 12px;font-size:14px;margin:0 0 12px}
+.chip button{border:0;background:none;cursor:pointer;color:var(--muted);font-size:16px}
+details.sm{margin:0 0 12px;color:var(--muted)}details.sm summary{cursor:pointer;margin-bottom:10px}
+.wait{padding:36px 8px;text-align:center;color:var(--muted)}.wait b{display:block;font:500 22px var(--serif);color:var(--ink);margin-bottom:6px}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--violet);margin-bottom:14px;animation:pl 1s infinite alternate}@keyframes pl{to{transform:scale(1.7);opacity:.35}}
+.fname{font:600 15px var(--sans);color:var(--violet)}
+
+</style>
+</head>
+<body id="top">
+<header class="hero">
+  <div class="wrap">
+    <div class="bar">
+      <a class="logo" href="#top">DeAilize <span style="font:600 12px var(--sans);background:rgba(255,255,255,.18);padding:3px 9px;border-radius:99px;vertical-align:middle">PRO</span></a>
+      <nav class="nav" aria-label="Main"><span id="who" style="color:var(--on-dark-2)"></span><a href="#" id="out">Log out</a></nav>
+    </div>
+    <div class="hero-grid" style="display:block;padding:20px 0 104px">
+      <h1><span>Rewrite, your way.</span><span class="dim">Paste it or upload it.</span></h1>
+      <p class="lede">Answer a few questions so it sounds like you. Every rewrite comes back as a numbered file.</p>
+    </div>
+  </div>
+</header>
+<section style="padding:0 0 60px;margin-top:-72px;position:relative;z-index:3">
+  <div class="wrap"><div class="card" style="max-width:860px"><div class="tabs" id="tabs"></div><div id="pane"></div></div></div>
+</section>
+<footer>
+  <div class="wrap">
+    <div>DeAilize helps you sharpen your own writing. Use it only where AI help is allowed.</div>
+    <nav aria-label="Footer">
+      <a href="#top">Home</a>
+      <a href="mailto:nkwoalaayomide@gmail.com">Contact</a>
+    </nav>
+  </div>
+</footer>
+<script>
+const API="https://wordloom-anw1.onrender.com",LANDING="index.html";
+const MAMMOTH="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.7.0/mammoth.browser.min.js",PDFJS="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js",PDFW="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+const $=id=>document.getElementById(id);
+const esc=t=>String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+let token=null;try{token=localStorage.getItem("dz_token")}catch(e){}
+const hm=location.hash.match(/t=([^&]+)/);
+if(hm){token=decodeURIComponent(hm[1]);try{localStorage.setItem("dz_token",token)}catch(e){}history.replaceState(null,"",location.pathname)}
+function leave(h){location.replace(LANDING+h)}
+function logout(){try{localStorage.removeItem("dz_token")}catch(e){}leave("#tool")}
+async function api(path,opts={}){
+  const r=await fetch(API+path,{...opts,headers:{"Content-Type":"application/json",Authorization:"Bearer "+token,...(opts.headers||{})}});
+  const d=await r.json().catch(()=>({}));
+  if(!r.ok){const e=new Error(typeof d.detail==="string"?d.detail:"Something went wrong.");e.status=r.status;if(r.status===401)logout();throw e}
+  return d;
+}
+let tabs=[],cur=0,seq=0;
+const mk=()=>({id:++seq,text:"",sample:"",loc:"",base:"",ver:0,stage:"input",qa:[],qs:[],round:0,out:"",file:"",msg:"",err:false});
+const T=()=>tabs[cur];
+const pad=n=>String(n).padStart(3,"0");
+function qaText(t){return t.qa.map(x=>"Q: "+x.q+"\nA: "+x.a).join("\n\n")}
+function renderTabs(){
+  $("tabs").innerHTML=tabs.map((t,i)=>'<button class="tab'+(i===cur?" on":"")+'" data-i="'+i+'">Rewrite '+t.id+(tabs.length>1?'<i data-x="'+i+'">✕</i>':"")+"</button>").join("")+'<button class="tab add" id="add">+ New rewrite</button>';
+  $("tabs").onclick=e=>{
+    if(e.target.id==="add"){tabs.push(mk());cur=tabs.length-1;return render()}
+    if(e.target.dataset.x!==undefined){tabs.splice(+e.target.dataset.x,1);if(!tabs.length)tabs.push(mk());cur=Math.min(cur,tabs.length-1);return render()}
+    const b=e.target.closest(".tab[data-i]");if(b){cur=+b.dataset.i;render()}
+  };
+}
+function render(){renderTabs();const t=T();({input:rInput,busy:rBusy,questions:rQs,done:rDone})[t.stage](t)}
+function rBusy(t){$("pane").innerHTML='<div class="wait"><span class="dot"></span><b>'+esc(t.msg)+'</b>This can take a minute. You can open another rewrite tab meanwhile.</div>'}
+function rInput(t){
+  $("pane").innerHTML=(t.file?'<div class="chip">📄 '+esc(t.file)+' <button id="rmf" aria-label="Remove file">✕</button></div>':"")+
+  '<textarea id="tin" placeholder="Paste your text here, or upload a file (.txt, .md, .docx, .pdf)">'+esc(t.text)+'</textarea>'+
+  (t.qa.length?'<p class="msg" style="margin:0 0 12px">Using the voice from your earlier answers. <a href="#" id="reans">Answer new questions instead</a></p>':"")+
+  '<details class="sm"><summary>Optional: your location and a sample of your own writing</summary><input id="tloc" placeholder="Your location (e.g. Onitsha)" value="'+esc(t.loc)+'"><textarea id="tsam" placeholder="Paste something you wrote yourself (makes the voice match stronger)">'+esc(t.sample)+'</textarea></details>'+
+  '<div class="row"><label class="btn line" for="tfile">⬆ Upload file</label><input type="file" id="tfile" accept=".txt,.md,.docx,.pdf" hidden><button class="btn grad" id="tgo">Rewrite</button></div>'+
+  '<p class="msg'+(t.err?" err":"")+'" id="tmsg">'+esc(t.msg)+"</p>";
+  $("tin").oninput=e=>{t.text=e.target.value};$("tloc").oninput=e=>{t.loc=e.target.value};$("tsam").oninput=e=>{t.sample=e.target.value};
+  if($("rmf"))$("rmf").onclick=()=>{t.file="";t.base="";t.ver=0;render()};
+  if($("reans"))$("reans").onclick=e=>{e.preventDefault();t.qa=[];render()};
+  $("tfile").onchange=async e=>{const f=e.target.files[0];if(!f)return;$("tmsg").textContent="Reading "+f.name+"…";
+    try{t.text=await readFile(f);t.file=f.name;const nm=f.name.replace(/\.[^.]+$/,""),m=nm.match(/^(.*)-(\d{3})$/);t.base=m?m[1]:nm;t.ver=m?+m[2]:0;t.msg="";t.err=false;render()}
+    catch(x){t.msg=x.message;t.err=true;render()}};
+  $("tgo").onclick=()=>start(t);
+}
+async function readFile(f){
+  const ext=f.name.split(".").pop().toLowerCase();
+  if(ext==="txt"||ext==="md")return f.text();
+  const buf=await f.arrayBuffer();
+  if(ext==="docx"){await loadScript(MAMMOTH);return(await mammoth.extractRawText({arrayBuffer:buf})).value}
+  if(ext==="pdf"){await loadScript(PDFJS);pdfjsLib.GlobalWorkerOptions.workerSrc=PDFW;const pdf=await pdfjsLib.getDocument({data:buf}).promise;let o="";
+    for(let i=1;i<=pdf.numPages;i++){const c=await(await pdf.getPage(i)).getTextContent();o+=c.items.map(x=>x.str).join(" ")+"\n\n"}return o}
+  throw new Error("Please use a .txt, .md, .docx or .pdf file.")
+}
+function loadScript(u){return new Promise((ok,no)=>{const s=document.createElement("script");s.src=u;s.onload=ok;s.onerror=()=>no(new Error("Couldn't load the file reader. Check your connection."));document.head.appendChild(s)})}
+function fail(t,e){t.stage="input";t.msg=e.message||"Couldn't reach the server.";t.err=true;render()}
+async function start(t){
+  if(!t.text.trim()){t.msg="Paste or upload some text first.";t.err=true;return render()}
+  t.err=false;t.msg="";if(t.qa.length)return rewrite(t);
+  t.stage="busy";t.msg="Reading your text and writing your questions…";render();
+  try{const d=await api("/engine/questions",{method:"POST",body:JSON.stringify({essay:t.text})});
+    if(!d.questions.length)return rewrite(t);t.qs=d.questions;t.round=1;t.stage="questions";render()}catch(e){fail(t,e)}
+}
+function rQs(t){
+  const more=t.round>1;
+  $("pane").innerHTML='<div class="qhead"><b>'+(more?"A few more, I want to get your voice right":"Make it sound like you")+'</b><span>'+(more?"Round "+t.round+" of up to 3. ":"")+'Answer in your own words. Typos and pidgin are welcome, they go in word for word.</span><div class="qbar"><i id="qfill"></i></div></div>'+
+  t.qs.map((q,i)=>'<div class="qc"><div class="qn">'+(i+1)+'</div><div class="qm"><label for="qq'+i+'">'+esc(q)+'</label><textarea id="qq'+i+'" rows="2" placeholder="Type it like you\'d send it on WhatsApp…"></textarea></div></div>').join("")+
+  '<div class="row"><button class="btn grad" id="qgo" disabled>Answer at least one</button><button class="btn line" id="qskip">Skip, rewrite now</button></div>';
+  const tas=[...$("pane").querySelectorAll("textarea")];
+  tas.forEach(x=>x.addEventListener("input",()=>{x.style.height="auto";x.style.height=x.scrollHeight+"px";x.closest(".qc").classList.toggle("done",!!x.value.trim());
+    const n=tas.filter(y=>y.value.trim()).length;$("qfill").style.width=(n/tas.length*100)+"%";$("qgo").disabled=!n;$("qgo").textContent=n?"Continue with "+n+" answer"+(n>1?"s":"")+" →":"Answer at least one"}));
+  $("qgo").onclick=()=>answered(t,tas);$("qskip").onclick=()=>rewrite(t);tas[0].focus();
+}
+async function answered(t,tas){
+  t.qs.forEach((q,i)=>{const a=tas[i].value.trim();if(a)t.qa.push({q,a})});
+  t.stage="busy";t.msg="Checking if I've caught your voice…";render();
+  try{const d=await api("/engine/questions",{method:"POST",body:JSON.stringify({essay:t.text,answers:qaText(t),round:t.round})});
+    if(d.enough||!d.questions.length)return rewrite(t);t.qs=d.questions;t.round++;t.stage="questions";render()}catch(e){fail(t,e)}
+}
+async function rewrite(t){
+  t.stage="busy";t.msg="Rewriting in your voice…";render();
+  const samples=[qaText(t),t.sample.trim()].filter(Boolean).join("\n\n")||t.text;
+  let res,out="";
+  try{res=await fetch(API+"/humanize/stream",{method:"POST",headers:{"Content-Type":"application/json",Authorization:"Bearer "+token},body:JSON.stringify({text:t.text,voice_samples:samples,location:t.loc.trim(),style:"match my voice"})})}
+  catch(e){return fail(t,new Error("Couldn't reach the server."))}
+  if(res.status===401)return logout();
+  if(!res.ok){const p=await res.json().catch(()=>null);return fail(t,new Error((p&&p.detail)||"Request failed ("+res.status+")."))}
+  const rd=res.body.getReader(),dec=new TextDecoder();let buf="",err=null;
+  while(true){const{done,value}=await rd.read();if(done)break;buf+=dec.decode(value,{stream:true});const ls=buf.split("\n");buf=ls.pop();
+    for(const l of ls){if(!l.startsWith("data: "))continue;try{const ev=JSON.parse(l.slice(6));
+      if(ev.type==="stage"&&t===T()&&t.stage==="busy"){t.msg=ev.message;rBusy(t)}else if(ev.type==="token")out+=ev.text;else if(ev.type==="error")err=ev.message}catch(e){}}}
+  if(err||!out.trim())return fail(t,new Error(err||"The rewrite came back empty. Try again."));
+  t.out=out.trim();t.base=t.base||(t.id>1?"rewrite-"+t.id:"rewrite");t.ver++;t.file=t.base+"-"+pad(t.ver)+".txt";t.stage="done";render();
+}
+function rDone(t){
+  $("pane").innerHTML='<p class="fname">'+esc(t.file)+'</p><div class="out">'+esc(t.out)+'</div><div class="row" style="margin-top:16px"><button class="btn grad" id="dl">⬇ Download '+esc(t.file)+'</button><button class="btn line" id="cp">Copy</button><button class="btn line" id="again">Rewrite this again</button></div><p class="msg" id="dmsg"></p>';
+  $("dl").onclick=()=>{const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([t.out],{type:"text/plain"}));a.download=t.file;a.click();URL.revokeObjectURL(a.href)};
+  $("cp").onclick=()=>navigator.clipboard.writeText(t.out).then(()=>{$("dmsg").textContent="Copied."});
+  $("again").onclick=()=>{t.text=t.out;t.out="";t.file="";t.stage="input";t.msg="";render()};
+}
+(async()=>{
+  if(!token)return leave("#tool");
+  try{const me=await api("/me");if(me.plan!=="pro")return leave("#pricing");$("who").textContent=me.email}
+  catch(e){if(e.status===401)return;$("pane").innerHTML='<div class="wait"><b>Couldn\'t load your account</b>'+esc(e.message)+" Refresh in a moment.</div>";return}
+  $("out").onclick=e=>{e.preventDefault();logout()};
+  tabs.push(mk());render();
+})();
+</script>
+</body>
+</html>
