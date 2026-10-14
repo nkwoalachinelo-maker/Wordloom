@@ -188,7 +188,7 @@ body>header .hero-grid{padding-bottom:28px!important}
     <div class="trial" id="paidNote" hidden style="max-width:760px"><span>Thanks for your payment! Log in or create an account with the email you paid with. As soon as Pro is switched on for it, you'll be taken to the Pro site.</span><a href="#" id="paidLogin">Log in</a></div>
     <div class="card" style="max-width:760px">
       <div class="trial"><span id="left"></span><a id="up" href="https://selar.com/2t9917v947" target="_blank" rel="noopener">Upgrade to Pro, $9/month</a></div>
-      <textarea id="inp" maxlength="2000" placeholder="Paste a paragraph you wrote (up to 2000 characters)"></textarea>
+      <textarea id="inp" maxlength="3000" placeholder="Paste a paragraph you wrote (up to 3000 characters)"></textarea>
       <div class="row"><button class="btn grad" id="go">Rewrite</button><button class="btn line" id="copy" hidden>Copy</button></div>
       <p class="msg" id="toolMsg" aria-live="polite"></p>
       <div id="qs" hidden></div>
@@ -433,7 +433,13 @@ let qa=[],round=1,essayText="";
 async function getApp(){if(!app){const {Client}=await import(GRADIO_CLIENT);app=await Client.connect(SPACE)}return app}
 const parseQs=t=>/^\s*ENOUGH/i.test(t)?[]:String(t).split("\n").map(l=>l.replace(/^\s*(?:\d+[\).:-]|[-*•])\s*/,"").trim()).filter(l=>l.length>8).slice(0,5);
 const qaText=()=>qa.map(x=>"Q: "+x.q+"\nA: "+x.a).join("\n\n");
-const busyMsg=()=>"Busy or quota reached, try again later.";
+const DEBUG=location.search.includes("debug=1");
+const busyMsg=e=>{
+  console.error(e);
+  const m=String((e&&(e.message||e.detail))||e||"");
+  const base=/quota|exceed|zerogpu|gpu/i.test(m)?"The free GPU quota is used up for now. Try again later.":"Busy or quota reached, try again later.";
+  return DEBUG?base+" ["+m.slice(0,220)+"]":base;
+};
 $("go").onclick=async()=>{
   const text=$("inp").value.trim();if(!text)return say("toolMsg","Paste some text first.",true);
   if(token){try{window.dzMe=await api("/me")}catch(e){if(e.status===401){token=null;try{localStorage.removeItem("dz_token")}catch(_){}window.dzMe=null;paintNav()}}paintLeft()}
@@ -446,7 +452,7 @@ $("go").onclick=async()=>{
     const qs=parseQs(r.data[0]);
     if(!qs.length)return rewrite("");
     showQuestions(qs);
-  }catch(e){say("toolMsg",busyMsg(),true)}
+  }catch(e){say("toolMsg",busyMsg(e),true)}
   $("go").disabled=false;
 };
 function showQuestions(qs){
@@ -480,7 +486,7 @@ async function rewrite(answers){
     const txt=clean(String(r.data[0]||""));
     if(!txt)say("toolMsg","That one didn't come out right. Please try again.",true);
     else{await countUse();$("out").textContent=txt;$("out").hidden=false;$("copy").hidden=false;say("toolMsg","");}
-  }catch(e){say("toolMsg",busyMsg(),true)}
+  }catch(e){say("toolMsg",busyMsg(e),true)}
   $("go").disabled=false;paintLeft();
 }
 $("copy").onclick=()=>navigator.clipboard.writeText($("out").textContent).then(()=>say("toolMsg","Copied."));
