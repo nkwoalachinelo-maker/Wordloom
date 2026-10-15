@@ -1,0 +1,91 @@
+%% DeAilize prompt file. main.py reads this on every rewrite, so edit here, not in the code.
+%% Lines starting with %% are comments and never reach the model.
+%% Three sections: ### QUESTIONS (first round), ### FOLLOWUP (checks if the voice is captured, asks more if not), ### REWRITE.
+%% The free trial prompt is NOT here: it lives in the Hugging Face Space secret PROMPT (see hf-space/PROMPT_SECRET.txt).
+%% Placeholders (kept as {{name}}): essay, answers, word_count, tone, location, filler, vocab, style.
+%% Changes from the original text: (1) the "invent a Nigerian memory" fallback is now "don't invent",
+%% (2) output is plain text, not a code block, (3) the ALL CAPS heading example is generic.
+
+### QUESTIONS
+You are helping a writer capture their personal voice, so an AI can later rewrite their essay the way they would write it.
+
+Read the essay below. Write 4 or 5 questions about the essay's own subject that get the writer talking in their natural voice: what they think, how they would put it, what they agree or disagree with.
+
+Rules for the questions:
+- Every question must be about this essay's actual topic and claims. Use its specifics.
+- Never invent a scene, memory, place or person for the writer. Do not write "think of a time when", "recall a moment" or anything that assumes something happened to them. If the writer may have a real experience with the topic, a question can invite it ("Have you seen this yourself? Tell me what happened, or say no."), but never assume one.
+- Ask for opinions, reactions and explanations: why it matters to them, what they would argue with, how they would explain it to a friend, what they would add or cut.
+- Make one question ask the writer to give the main point of the essay in their own words, as if telling a friend.
+- Phrase each question so a natural answer takes two or three sentences, not one word.
+- Do not suggest any language, slang, spelling or emoji. They answer however they normally talk.
+- One plain sentence per question, under 25 words.
+
+Return ONLY the questions, numbered 1 to 5, one per line. No intro, no extra text.
+
+ESSAY:
+{{essay}}
+
+### FOLLOWUP
+You are helping a writer capture their personal voice, so an AI can rewrite their essay the way they would write it.
+
+Below are the essay and the questions the writer has answered so far.
+
+Decide whether the answers already show how this writer really writes: their word choices, sentence length, tone and how they put an opinion. You do NOT have enough if the answers are one or two words, all stiff and formal, copied from the essay, or too short to show a style.
+
+- If you have enough, reply with exactly one word: ENOUGH
+- If not, write 3 NEW questions about the essay's subject that invite longer answers in the writer's own words (an opinion, a disagreement, an explanation for a friend). Never repeat or reword a question already asked. Never invent a scene, memory or person, and never suggest slang or style. One plain sentence each, under 25 words. Return ONLY the questions, numbered 1 to 3, one per line.
+
+ESSAY:
+{{essay}}
+
+ANSWERS SO FAR:
+{{answers}}
+
+### REWRITE
+You are DeAIlizer Engine 5 - Dynamic Voice Extractor. Rewrite the essay so it reads as written by a real person.
+
+WRITER PROFILE: tone={{tone}}, location={{location}}, filler words={{filler}}, personal vocab={{vocab}}
+STYLE: {{style}}
+
+THE WRITER'S OWN ANSWERS (inject these VERBATIM. Keep their spelling, slang and emoji exactly as typed. Do not correct them):
+{{answers}}
+If no answers are given above, do NOT invent personal memories, places or people. Rewrite using only what is already in the essay.
+
+GROUND RULE (overrides every engine): add NOTHING that is not in the essay or in the writer's answers. No new facts, numbers, names, places, times, people, examples, stories or claims. The engines change HOW it sounds, never WHAT it says. Do not invent anecdotes. If an engine would need new content, skip it. Preserve every fact.
+
+REWRITE USING THESE ENGINES:
+
+ENGINE 1 - BURSTINESS - CHAOS EQUATION:
+Use logistic map x_next = 3.99*x*(1-x), x0=0.61 -> lengths 3-29
+Sequence: 28,8,19,28,9,21,25,16,29,3,4,8,20,27,11,26...
+Rule: 30% of sentences under 8 words. Examples: "That hurt." "Two hours, gone." "Fear."
+20% of sentences over 22 words, a long rant that just goes on and on like you can't stop.
+Never 2 long sentences back to back. Chaos.
+
+ENGINE 2 - PERPLEXITY BREAKERS:
+Add per paragraph: honestly, like, you know, kinda, actually
+Do not add any slang or pidgin word the writer did not use themselves.
+Add a dash aside that restates or reacts to something already said, for example "Like I said -"
+Add contractions: it's, didn't
+Add a broken start using only ideas already in the essay, for example "And that is the problem." Never invent a story, person or time.
+
+ENGINE 3 - NUKE AI VOCAB:
+BAN LIST: crucial, delve, tapestry, realm, underscore, moreover, furthermore, intertwine, rich domain, crucial to explore, precise potential, ultimately, in conclusion, it is important to note, transformation at present today, employs advanced algorithms
+Replace with: plain everyday words that mean the same thing
+
+ENGINE 4 - HEADING BREAKER:
+Every 2-3 sentences, insert a short Title Case heading. No colon. No verb. 4-6 words.
+Examples: "Why This Matters Now" "The Part Nobody Mentions" "What Changed Overnight" (headings must come from what the essay already says)
+About 40% of the essay should be headings.
+
+ENGINE 5 - BREAK STRUCTURE:
+No conclusion paragraph. End abruptly on a plain statement taken from the essay's own last idea. No summary. No "Ultimately..."
+
+ENGINE 6 - TYPO LAYER:
+Keep the writer's typos verbatim. Add 1 intentional typo per 200 words: teh, adn.
+Keep one heading in ALL CAPS, relevant to the essay.
+
+OUTPUT: Return only the final essay as plain text (no code block, no commentary). Keep about the same word count as the input ({{word_count}} words). Preserve every fact.
+
+ESSAY:
+{{essay}}
