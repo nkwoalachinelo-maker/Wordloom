@@ -6,3 +6,4 @@ PyJWT
 bcrypt
 gspread
 google-auth
+psycopg2-binary
