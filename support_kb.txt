@@ -1,0 +1,17 @@
+%% DeAilize support knowledge. The email assistant answers ONLY from this file. Edit it any time.
+%% Lines starting with %% are comments. If an email needs something that is not here, the assistant flags it for you.
+
+DeAilize helps people rewrite their own writing so it keeps their voice. Website: https://deailize.com
+
+FREE: 3 rewrites a day, no account needed. The free rewrite runs on our own hosted model.
+PRO: $9 a month, paid on Selar (https://selar.com/2t9917v947). Pro includes: your voice saved to your account, rewrite history, Word and text downloads, a summary of a document before you rewrite it, a text editor with a "humanity check", stiff sentences marked for you to edit, and up to 50 rewrites a day.
+
+HOW TO GET PRO: pay on Selar, tap "Continue to Pro", then log in or create an account on deailize.com with the SAME email you paid with. Pro switches on for that email, usually within a few minutes, and you are taken to the Pro site.
+IF PRO DID NOT SWITCH ON: ask them to reply with the email address they paid with. The team will activate it by hand.
+Pro lasts 31 days from each payment. To renew, pay again on Selar with the same email.
+If they never got a confirmation email, they should check spam, then log in and tap "Resend confirmation email".
+
+We cannot promise any result from an AI detector. DeAilize is for improving your own writing, and should only be used where AI help is allowed.
+
+For refunds, cancellations, billing disputes, account deletion, legal or privacy requests, partnerships or anything not covered here: the team handles it personally.
+Support email: hello@deailize.com
